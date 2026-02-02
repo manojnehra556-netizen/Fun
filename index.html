@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quick Personality Survey</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 18px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      font-size: 15px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box" id="app">
+  <h2>Quick Relationship Survey 💙</h2>
+  <p>Ready to answer honestly?</p>
+  <button onclick="next()">Start</button>
+</div>
+
+<script>
+  let step = 0;
+
+  const questions = [
+    "Do you believe in love at first sight? 😌",
+    "Who gets angry first in a fight? 😅",
+    "Would you trust your partner with your phone? 📱",
+    "Who do you love more? ❤️",
+    "One word for your relationship?"
+  ];
+
+  function next() {
+    const app = document.getElementById("app");
+
+    if (step < questions.length) {
+      app.innerHTML = `
+        <h2>Question ${step + 1}</h2>
+        <p>${questions[step]}</p>
+        <input placeholder="Type your answer here">
+        <br><br>
+        <button onclick="next()">Next</button>
+      `;
+      step++;
+    } else {
+      app.innerHTML = `
+        <h2>Processing Answers... ⏳</h2>
+        <p>Please wait</p>
+      `;
+
+      setTimeout(() => {
+        app.innerHTML = `
+          <h2>Result 💖</h2>
+          <p>You are officially dating the cutest person alive 😌</p>
+          <p><strong>And yes… this was a prank 😜</strong></p>
+          <p>But I love you ❤️</p>
+        `;
+      }, 2000);
+    }
+  }
+</script>
+
+</body>
+</html>
