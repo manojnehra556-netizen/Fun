@@ -1,69 +1,239 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Website Development</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 40px;
-            background: white;
-        }
-        h1 {
-            color: #1e40af;
-        }
-        .price {
-            font-size: 22px;
-            color: #dc2626;
-        }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 20px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .contact {
-            margin-top: 30px;
-            background: #f1f5f9;
-            padding: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>CityRide – Your Local Travel Partner</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f6f8;
+  color:#1f2937;
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  color:#fff;
+  padding:80px 20px;
+  text-align:center;
+}
+
+.logo{
+  font-size:46px;
+  font-weight:900;
+}
+
+.tagline{
+  font-size:20px;
+  margin-top:10px;
+  opacity:.95;
+}
+
+.cta-btn{
+  display:inline-block;
+  margin-top:30px;
+  padding:18px 40px;
+  background:#22c55e;
+  color:#fff;
+  font-size:22px;
+  font-weight:800;
+  border-radius:50px;
+  text-decoration:none;
+}
+
+/* NAV */
+nav{
+  margin-top:30px;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+}
+nav a{
+  color:#fff;
+  text-decoration:none;
+  font-size:18px;
+  font-weight:700;
+}
+
+/* SECTION */
+.section{
+  max-width:1100px;
+  margin:auto;
+  padding:80px 20px;
+}
+
+.section h2{
+  text-align:center;
+  font-size:34px;
+  color:#1e40af;
+  margin-bottom:50px;
+}
+
+/* FEATURES */
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+}
+
+.feature{
+  background:#fff;
+  padding:35px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.feature img{
+  width:60px;
+  margin-bottom:15px;
+}
+
+/* HOW IT WORKS */
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:25px;
+}
+
+.step{
+  background:#fff;
+  padding:30px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* APP INFO */
+.app-box{
+  background:#fff;
+  padding:40px;
+  border-radius:20px;
+  font-size:18px;
+  line-height:1.7;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* CONTACT */
+.contact{
+  text-align:center;
+}
+
+.contact a{
+  display:inline-block;
+  margin:10px;
+  font-size:22px;
+  font-weight:800;
+  color:#2563eb;
+  text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+  background:#0f172a;
+  color:#cbd5e1;
+  text-align:center;
+  padding:22px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .logo{font-size:34px;}
+  .tagline{font-size:18px;}
+}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>आपकी वेबसाइट बनवाएं</h1>
-    <p>Grow करें प्रोफेशनल तरीके से</p>
+<header>
+  <div class="logo">CityRide</div>
+  <div class="tagline">Your Local Travel Partner</div>
 
-    <h2>हमारी सेवाएं</h2>
-    <ul>
-        <li>Professional Business Website</li>
-        <li>Mobile Friendly Design</li>
-        <li>Basic SEO Setup</li>
-        <li>Fast & Secure Delivery</li>
-    </ul>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#app">App</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
-    <h2>Pricing</h2>
-    <p class="price">₹3,999 | ₹6,999 | ₹9,999</p>
+  <a href="#contact" class="cta-btn">Book Your Ride</a>
+</header>
 
-    <a class="btn" href="tel:9772237618">Call Now</a>
+<!-- FEATURES -->
+<div class="section" id="features">
+  <h2>Why Choose CityRide?</h2>
 
-    <div class="contact">
-        <h3>Contact Us</h3>
-        <p>📞 97722 37618</p>
-        <p>📧 manojnehra556@gmail.com</p>
+  <div class="features">
+    <div class="feature">
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png">
+      <h3>Google Maps</h3>
+      <p>Accurate pickup, drop & route navigation</p>
     </div>
+
+    <div class="feature">
+      <img src="https://cdn-icons-png.flaticon.com/512/2972/2972185.png">
+      <h3>Transparent Pricing</h3>
+      <p>Know your fare before booking</p>
+    </div>
+
+    <div class="feature">
+      <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png">
+      <h3>Safe & Reliable</h3>
+      <p>Verified drivers for secure travel</p>
+    </div>
+
+    <div class="feature">
+      <img src="https://cdn-icons-png.flaticon.com/512/1256/1256650.png">
+      <h3>Local Focus</h3>
+      <p>Designed for everyday city travel</p>
+    </div>
+  </div>
 </div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+  <h2>How CityRide Works</h2>
+
+  <div class="steps">
+    <div class="step">📍 Select Pickup & Drop</div>
+    <div class="step">🚗 Choose Your Ride</div>
+    <div class="step">💰 View Fare Estimate</div>
+    <div class="step">✅ Confirm & Travel</div>
+  </div>
+</div>
+
+<!-- APP INFO -->
+<div class="section" id="app">
+  <h2>About the CityRide App</h2>
+
+  <div class="app-box">
+    CityRide is a local car booking platform built for daily city travel.
+    Users can easily book rides, choose car types, view fare estimates
+    and navigate using Google Maps.
+
+    <br><br>
+    The app supports local point-to-point rides and is designed to be
+    fast, simple and reliable for both riders and drivers.
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section contact" id="contact">
+  <h2>Get in Touch</h2>
+  <p>Book your ride or partner with us</p>
+
+  <a href="tel:9772237618">📞 Call: 97722 37618</a><br>
+  <a href="https://wa.me/919772237618">💬 WhatsApp CityRide</a>
+</div>
+
+<footer>
+  © 2026 CityRide | Your Local Travel Partner
+</footer>
 
 </body>
 </html>
