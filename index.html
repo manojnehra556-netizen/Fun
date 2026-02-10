@@ -17,7 +17,7 @@ body{
 header{
   background:linear-gradient(135deg,#2563eb,#1e40af);
   color:#fff;
-  padding:80px 20px;
+  padding:70px 20px;
   text-align:center;
 }
 
@@ -28,19 +28,17 @@ header{
 
 .tagline{
   font-size:20px;
-  margin-top:10px;
-  opacity:.95;
+  margin-top:8px;
 }
 
 /* NAV */
 nav{
-  margin-top:30px;
+  margin-top:25px;
   display:flex;
   justify-content:center;
   gap:30px;
   flex-wrap:wrap;
 }
-
 nav a{
   color:#fff;
   text-decoration:none;
@@ -48,10 +46,31 @@ nav a{
   font-weight:700;
 }
 
+/* AUTH BUTTONS */
+.auth{
+  margin-top:20px;
+}
+.auth a{
+  display:inline-block;
+  padding:10px 20px;
+  margin:5px;
+  border-radius:30px;
+  font-weight:700;
+  text-decoration:none;
+}
+.login{
+  background:#fff;
+  color:#2563eb;
+}
+.signup{
+  border:2px solid #fff;
+  color:#fff;
+}
+
 /* CTA */
 .cta-btn{
   display:inline-block;
-  margin-top:35px;
+  margin-top:30px;
   padding:18px 45px;
   background:#22c55e;
   color:#fff;
@@ -67,7 +86,6 @@ nav a{
   margin:auto;
   padding:80px 20px;
 }
-
 .section h2{
   text-align:center;
   font-size:34px;
@@ -81,18 +99,13 @@ nav a{
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:30px;
 }
-
 .feature{
   background:#fff;
   padding:35px;
   border-radius:18px;
   text-align:center;
   box-shadow:0 10px 25px rgba(0,0,0,0.08);
-}
-
-.feature img{
-  width:60px;
-  margin-bottom:15px;
+  font-size:17px;
 }
 
 /* HOW IT WORKS */
@@ -101,7 +114,6 @@ nav a{
   grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:25px;
 }
-
 .step{
   background:#fff;
   padding:30px;
@@ -126,7 +138,6 @@ nav a{
 .contact{
   text-align:center;
 }
-
 .contact a{
   display:inline-block;
   margin:12px;
@@ -154,7 +165,6 @@ footer{
 
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="logo">CityRide</div>
   <div class="tagline">Your Local Travel Partner</div>
@@ -166,65 +176,43 @@ footer{
     <a href="#contact">Contact</a>
   </nav>
 
-  <!-- BOOK RIDE BUTTON -->
+  <div class="auth" id="authButtons">
+    <a href="login.html" class="login">Login</a>
+    <a href="signup.html" class="signup">Sign Up</a>
+  </div>
+
   <a href="bookride.html" class="cta-btn">Book Your Ride</a>
 </header>
 
 <!-- FEATURES -->
 <div class="section" id="features">
   <h2>Why Choose CityRide?</h2>
-
   <div class="features">
-    <div class="feature">
-      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png">
-      <h3>Google Maps</h3>
-      <p>Accurate pickup, drop & route navigation</p>
-    </div>
-
-    <div class="feature">
-      <img src="https://cdn-icons-png.flaticon.com/512/2972/2972185.png">
-      <h3>Transparent Pricing</h3>
-      <p>Know your fare before booking</p>
-    </div>
-
-    <div class="feature">
-      <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png">
-      <h3>Safe & Reliable</h3>
-      <p>Verified drivers for secure travel</p>
-    </div>
-
-    <div class="feature">
-      <img src="https://cdn-icons-png.flaticon.com/512/1256/1256650.png">
-      <h3>Local Focus</h3>
-      <p>Perfect for everyday city travel</p>
-    </div>
+    <div class="feature">📍 Easy Pickup & Drop</div>
+    <div class="feature">💰 Transparent Pricing</div>
+    <div class="feature">🚗 Verified Local Drivers</div>
+    <div class="feature">⚡ Fast Booking Process</div>
   </div>
 </div>
 
 <!-- HOW IT WORKS -->
 <div class="section" id="how">
   <h2>How CityRide Works</h2>
-
   <div class="steps">
-    <div class="step">📍 Select Pickup & Drop</div>
-    <div class="step">🚗 Choose Car Type</div>
-    <div class="step">💰 View Fare Estimate</div>
-    <div class="step">✅ Confirm & Travel</div>
+    <div class="step">📍 Enter Location</div>
+    <div class="step">🚗 Choose Ride</div>
+    <div class="step">💰 View Fare</div>
+    <div class="step">✅ Login & Confirm</div>
   </div>
 </div>
 
 <!-- ABOUT -->
 <div class="section" id="about">
   <h2>About CityRide</h2>
-
   <div class="about-box">
     CityRide is a local car booking platform designed for daily city travel.
-    We focus on safe, reliable and affordable transportation using modern
-    technology like Google Maps and transparent pricing.
-
-    <br><br>
-    Our goal is to make local travel simple for everyone while empowering
-    drivers with consistent ride opportunities.
+    Our mission is to make local transportation affordable, reliable and easy
+    for everyone while empowering local drivers with consistent income.
   </div>
 </div>
 
@@ -232,7 +220,6 @@ footer{
 <div class="section contact" id="contact">
   <h2>Contact Us</h2>
   <p>Book your ride or partner with CityRide</p>
-
   <a href="tel:9772237618">📞 Call: 97722 37618</a><br>
   <a href="https://wa.me/919772237618">💬 WhatsApp CityRide</a>
 </div>
@@ -240,6 +227,20 @@ footer{
 <footer>
   © 2026 CityRide | Your Local Travel Partner
 </footer>
+
+<script>
+/* SHOW USER WHEN LOGGED IN */
+if(localStorage.getItem("loggedIn")==="yes"){
+  const user = JSON.parse(localStorage.getItem("cityrideUser"));
+  document.getElementById("authButtons").innerHTML =
+    `Welcome <b>${user.name}</b> |
+     <a href="#" style="color:#fff" onclick="logout()">Logout</a>`;
+}
+function logout(){
+  localStorage.removeItem("loggedIn");
+  location.reload();
+}
+</script>
 
 </body>
 </html>
