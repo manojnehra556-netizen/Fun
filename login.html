@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login – CityRide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f6f8;
+}
+
+header{
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  color:#fff;
+  padding:40px;
+  text-align:center;
+}
+
+.container{
+  max-width:400px;
+  margin:40px auto;
+  background:#fff;
+  padding:30px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+h2{
+  text-align:center;
+  color:#1e40af;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin-top:15px;
+  font-size:16px;
+  border-radius:10px;
+  border:1px solid #d1d5db;
+}
+
+button{
+  margin-top:25px;
+  width:100%;
+  padding:16px;
+  font-size:18px;
+  font-weight:800;
+  background:#22c55e;
+  color:#fff;
+  border:none;
+  border-radius:40px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>CityRide Login</h1>
+  <p>Please login to continue booking</p>
+</header>
+
+<div class="container">
+  <h2>User Login</h2>
+
+  <input type="tel" placeholder="Mobile Number" required>
+  <input type="password" placeholder="Password / OTP" required>
+
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+function login(){
+  alert("Login successful (demo)");
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
