@@ -2,57 +2,53 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Select Location – CityRide</title>
+<title>Book Ride – CityRide</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   background:#f4f6f8;
 }
-
 header{
-  background:linear-gradient(135deg,#2563eb,#1e40af);
+  background:#2563eb;
   color:#fff;
-  padding:40px;
+  padding:30px;
   text-align:center;
 }
-
 .container{
-  max-width:600px;
-  margin:40px auto;
+  max-width:500px;
+  margin:30px auto;
   background:#fff;
-  padding:30px;
+  padding:25px;
   border-radius:16px;
   box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
-
-h2{
-  text-align:center;
-  color:#1e40af;
-}
-
 input{
   width:100%;
   padding:14px;
-  margin-top:15px;
-  font-size:16px;
+  margin-top:12px;
   border-radius:10px;
   border:1px solid #d1d5db;
+  font-size:16px;
 }
-
 button{
-  margin-top:25px;
   width:100%;
-  padding:16px;
-  font-size:18px;
-  font-weight:800;
-  background:#22c55e;
-  color:#fff;
+  padding:15px;
+  margin-top:20px;
   border:none;
   border-radius:40px;
-  cursor:pointer;
+  background:#22c55e;
+  color:#fff;
+  font-size:18px;
+  font-weight:800;
+}
+.result{
+  margin-top:20px;
+  font-size:18px;
+  text-align:center;
+  color:#1e40af;
 }
 </style>
 </head>
@@ -61,22 +57,58 @@ button{
 
 <header>
   <h1>CityRide</h1>
-  <p>Select your ride location</p>
+  <p>Book your local ride</p>
 </header>
 
 <div class="container">
-  <h2>Enter Ride Location</h2>
+  <input type="text" id="drop" placeholder="Drop Location (area name)">
 
-  <input type="text" placeholder="Pickup Location" required>
-  <input type="text" placeholder="Drop Location" required>
+  <button onclick="calculateFare()">Calculate Fare</button>
 
-  <button onclick="goLogin()">Book Now</button>
+  <div class="result" id="output"></div>
 </div>
 
 <script>
-function goLogin(){
-  alert("Login required to continue");
-  window.location.href = "login.html";
+// Haversine Formula
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // km
+  const dLat = (lat2-lat1) * Math.PI / 180;
+  const dLon = (lon2-lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1*Math.PI/180) *
+    Math.cos(lat2*Math.PI/180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+function calculateFare(){
+  if(!navigator.geolocation){
+    alert("Location not supported");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(pos => {
+    const pickupLat = pos.coords.latitude;
+    const pickupLng = pos.coords.longitude;
+
+    // Dummy drop coordinates (for now)
+    const dropLat = pickupLat + 0.05;
+    const dropLng = pickupLng + 0.05;
+
+    let distance = getDistance(pickupLat, pickupLng, dropLat, dropLng);
+    distance = distance * 1.25; // buffer
+    distance = distance.toFixed(2);
+
+    const rate = 12; // ₹ per km
+    const fare = Math.round(distance * rate);
+
+    document.getElementById("output").innerHTML =
+      `Estimated Distance: <b>${distance} km</b><br>
+       Estimated Fare: <b>₹${fare}</b><br><br>
+       <small>(Login required to book)</small>`;
+  });
 }
 </script>
 
