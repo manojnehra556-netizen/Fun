@@ -1,82 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <title>Login – CityRide</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f4f6f8;
-}
-
-header{
-  background:linear-gradient(135deg,#2563eb,#1e40af);
-  color:#fff;
-  padding:40px;
-  text-align:center;
-}
-
-.container{
+body{font-family:Arial;background:#f4f6f8;}
+.box{
   max-width:400px;
-  margin:40px auto;
+  margin:60px auto;
   background:#fff;
   padding:30px;
-  border-radius:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  border-radius:14px;
 }
-
-h2{
-  text-align:center;
-  color:#1e40af;
-}
-
-input{
+input,button{
   width:100%;
   padding:14px;
-  margin-top:15px;
-  font-size:16px;
-  border-radius:10px;
-  border:1px solid #d1d5db;
+  margin-top:12px;
 }
-
 button{
-  margin-top:25px;
-  width:100%;
-  padding:16px;
-  font-size:18px;
-  font-weight:800;
   background:#22c55e;
   color:#fff;
   border:none;
-  border-radius:40px;
-  cursor:pointer;
+  font-weight:800;
 }
 </style>
 </head>
-
 <body>
 
-<header>
-  <h1>CityRide Login</h1>
-  <p>Please login to continue booking</p>
-</header>
+<div class="box">
+  <h2>Login</h2>
 
-<div class="container">
-  <h2>User Login</h2>
-
-  <input type="tel" placeholder="Mobile Number" required>
-  <input type="password" placeholder="Password" required>
+  <input id="phone" placeholder="Mobile Number">
+  <input id="pass" placeholder="Password">
 
   <button onclick="login()">Login</button>
 </div>
 
 <script>
 function login(){
-  alert("Login successful (demo)");
-  window.location.href = "index.html";
+  const saved = JSON.parse(localStorage.getItem("cityrideUser"));
+
+  if(!saved){
+    alert("No account found. Please sign up.");
+    return;
+  }
+
+  if(phone.value === saved.phone && pass.value === saved.pass){
+    localStorage.setItem("loggedIn","yes");
+    alert("Login successful");
+    window.location.href="index.html";
+  } else {
+    alert("Invalid credentials");
+  }
 }
 </script>
 
