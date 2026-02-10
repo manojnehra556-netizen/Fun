@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>CityRide – Your Local Travel Partner</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -33,30 +32,33 @@ header{
   opacity:.95;
 }
 
-.cta-btn{
-  display:inline-block;
-  margin-top:30px;
-  padding:18px 40px;
-  background:#22c55e;
-  color:#fff;
-  font-size:22px;
-  font-weight:800;
-  border-radius:50px;
-  text-decoration:none;
-}
-
 /* NAV */
 nav{
   margin-top:30px;
   display:flex;
   justify-content:center;
   gap:30px;
+  flex-wrap:wrap;
 }
+
 nav a{
   color:#fff;
   text-decoration:none;
   font-size:18px;
   font-weight:700;
+}
+
+/* CTA */
+.cta-btn{
+  display:inline-block;
+  margin-top:35px;
+  padding:18px 45px;
+  background:#22c55e;
+  color:#fff;
+  font-size:22px;
+  font-weight:800;
+  border-radius:50px;
+  text-decoration:none;
 }
 
 /* SECTION */
@@ -105,11 +107,13 @@ nav a{
   padding:30px;
   border-radius:18px;
   text-align:center;
+  font-size:18px;
+  font-weight:700;
   box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-/* APP INFO */
-.app-box{
+/* ABOUT */
+.about-box{
   background:#fff;
   padding:40px;
   border-radius:20px;
@@ -125,7 +129,7 @@ nav a{
 
 .contact a{
   display:inline-block;
-  margin:10px;
+  margin:12px;
   font-size:22px;
   font-weight:800;
   color:#2563eb;
@@ -150,6 +154,7 @@ footer{
 
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="logo">CityRide</div>
   <div class="tagline">Your Local Travel Partner</div>
@@ -157,11 +162,12 @@ footer{
   <nav>
     <a href="#features">Features</a>
     <a href="#how">How It Works</a>
-    <a href="#app">App</a>
+    <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </nav>
 
-  <a href="#contact" class="cta-btn">Book Your Ride</a>
+  <!-- BOOK RIDE BUTTON -->
+  <a href="bookride.html" class="cta-btn">Book Your Ride</a>
 </header>
 
 <!-- FEATURES -->
@@ -190,7 +196,7 @@ footer{
     <div class="feature">
       <img src="https://cdn-icons-png.flaticon.com/512/1256/1256650.png">
       <h3>Local Focus</h3>
-      <p>Designed for everyday city travel</p>
+      <p>Perfect for everyday city travel</p>
     </div>
   </div>
 </div>
@@ -201,31 +207,31 @@ footer{
 
   <div class="steps">
     <div class="step">📍 Select Pickup & Drop</div>
-    <div class="step">🚗 Choose Your Ride</div>
+    <div class="step">🚗 Choose Car Type</div>
     <div class="step">💰 View Fare Estimate</div>
     <div class="step">✅ Confirm & Travel</div>
   </div>
 </div>
 
-<!-- APP INFO -->
-<div class="section" id="app">
-  <h2>About the CityRide App</h2>
+<!-- ABOUT -->
+<div class="section" id="about">
+  <h2>About CityRide</h2>
 
-  <div class="app-box">
-    CityRide is a local car booking platform built for daily city travel.
-    Users can easily book rides, choose car types, view fare estimates
-    and navigate using Google Maps.
+  <div class="about-box">
+    CityRide is a local car booking platform designed for daily city travel.
+    We focus on safe, reliable and affordable transportation using modern
+    technology like Google Maps and transparent pricing.
 
     <br><br>
-    The app supports local point-to-point rides and is designed to be
-    fast, simple and reliable for both riders and drivers.
+    Our goal is to make local travel simple for everyone while empowering
+    drivers with consistent ride opportunities.
   </div>
 </div>
 
 <!-- CONTACT -->
 <div class="section contact" id="contact">
-  <h2>Get in Touch</h2>
-  <p>Book your ride or partner with us</p>
+  <h2>Contact Us</h2>
+  <p>Book your ride or partner with CityRide</p>
 
   <a href="tel:9772237618">📞 Call: 97722 37618</a><br>
   <a href="https://wa.me/919772237618">💬 WhatsApp CityRide</a>
