@@ -25,7 +25,7 @@ header{
   border-radius:16px;
   box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
-input{
+input, select{
   width:100%;
   padding:14px;
   margin-top:12px;
@@ -39,11 +39,17 @@ button{
   margin-top:20px;
   border:none;
   border-radius:40px;
-  background:#22c55e;
-  color:#fff;
   font-size:18px;
   font-weight:800;
   cursor:pointer;
+}
+.calc-btn{
+  background:#22c55e;
+  color:#fff;
+}
+.book-btn{
+  background:#2563eb;
+  color:#fff;
 }
 .result{
   margin-top:20px;
@@ -61,20 +67,32 @@ small{
 
 <header>
   <h1>CityRide</h1>
-  <p>Calculate Fare (Free – No Maps)</p>
+  <p>Calculate Fare & Book Your Ride</p>
 </header>
 
 <div class="container">
-  <input type="text" id="drop" placeholder="Drop Location (area name)">
 
-  <button onclick="calculateFare()">Calculate Fare</button>
+  <input type="text" id="drop" placeholder="Enter Drop Location">
 
-  <div class="result" id="output">
-    <small>Click “Calculate Fare” to allow location access</small>
-  </div>
+  <button class="calc-btn" onclick="calculateFare()">Calculate Fare</button>
+
+  <div class="result" id="output"></div>
+
+  <!-- Vehicle Selection -->
+  <select id="vehicle" style="display:none;">
+    <option value="">Select Vehicle Type</option>
+    <option value="taxi">Taxi</option>
+    <option value="tampoo">Tampoo</option>
+    <option value="pickup">Pickup</option>
+    <option value="luxury">Luxury Cars</option>
+  </select>
+
+  <button class="book-btn" id="bookBtn" style="display:none;" onclick="bookNow()">Book Now</button>
+
 </div>
 
 <script>
+
 // Haversine Formula
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371;
@@ -90,39 +108,64 @@ function getDistance(lat1, lon1, lat2, lon2) {
 
 function calculateFare(){
   const output = document.getElementById("output");
-  output.innerHTML = "📍 Detecting your location…";
 
   if(!navigator.geolocation){
-    output.innerHTML = "❌ Location not supported on this device";
+    output.innerHTML = "Location not supported";
     return;
   }
 
+  output.innerHTML = "Detecting your location...";
+
   navigator.geolocation.getCurrentPosition(
     position => {
+
       const pickupLat = position.coords.latitude;
       const pickupLng = position.coords.longitude;
 
-      // Temporary dummy drop (for MVP)
+      // Dummy drop for MVP
       const dropLat = pickupLat + 0.05;
       const dropLng = pickupLng + 0.05;
 
       let distance = getDistance(pickupLat, pickupLng, dropLat, dropLng);
-      distance = (distance * 1.25).toFixed(2); // buffer
+      distance = (distance * 1.25).toFixed(2);
 
-      const rate = 12;
+      // Base rate ₹12/km
+      let rate = 12;
       const fare = Math.round(distance * rate);
 
-      output.innerHTML = `
-        🚗 Estimated Distance: <b>${distance} km</b><br>
-        💰 Estimated Fare: <b>₹${fare}</b><br><br>
-        <small>Login required to confirm booking</small>
-      `;
+      output.innerHTML =
+        `🚗 Distance: <b>${distance} km</b><br>
+         💰 Base Fare: <b>₹${fare}</b>`;
+
+      // Show vehicle selection & book button
+      document.getElementById("vehicle").style.display = "block";
+      document.getElementById("bookBtn").style.display = "block";
+
     },
-    error => {
-      output.innerHTML = "❌ Location permission denied. Please allow GPS.";
+    () => {
+      output.innerHTML = "Location permission denied.";
     }
   );
 }
+
+function bookNow(){
+  const vehicle = document.getElementById("vehicle").value;
+
+  if(vehicle === ""){
+    alert("Please select vehicle type");
+    return;
+  }
+
+  if(localStorage.getItem("loggedIn") !== "yes"){
+    alert("Login required to book ride");
+    window.location.href="login.html";
+    return;
+  }
+
+  alert("Booking confirmed for " + vehicle + " 🚗");
+  window.location.href="index.html";
+}
+
 </script>
 
 </body>
