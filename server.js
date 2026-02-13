@@ -4,17 +4,15 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-/* ================= MIDDLEWARE ================= */
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-/* ================= MONGODB CONNECTION ================= */
+/* ================= MONGODB ================= */
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected Successfully"))
-  .catch(err => console.log("❌ Mongo Error:", err));
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
 /* ================= SCHEMA ================= */
 
@@ -23,7 +21,22 @@ const newsSchema = new mongoose.Schema({
   content: String,
   image: String,
   category: String,
-  breaking: Boolean,
+
+  breaking: {
+    type: Boolean,
+    default: false
+  },
+
+  topNews: {
+    type: Boolean,
+    default: false
+  },
+
+  views: {
+    type: Number,
+    default: 0
+  },
+
   createdAt: {
     type: Date,
     default: Date.now
@@ -32,23 +45,19 @@ const newsSchema = new mongoose.Schema({
 
 const News = mongoose.model("News", newsSchema);
 
-/* ================= ROUTES ================= */
+/* ================= HOMEPAGE ================= */
 
-/* ===== HOMEPAGE ===== */
 app.get("/", async (req, res) => {
   try {
 
-    // Breaking News (Top scrolling)
     const breakingNews = await News.find({ breaking: true })
       .sort({ createdAt: -1 })
       .limit(5);
 
-    // Top News Section
-    const topNews = await News.find()
+    const topNews = await News.find({ topNews: true })
       .sort({ createdAt: -1 })
       .limit(5);
 
-    // Local Preview (Only 2)
     const local = await News.find({ category: "Local" })
       .sort({ createdAt: -1 })
       .limit(2);
@@ -65,7 +74,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-/* ===== CATEGORY PAGE ===== */
+/* ================= CATEGORY PAGE ================= */
+
 app.get("/category/:name", async (req, res) => {
   try {
 
@@ -79,40 +89,44 @@ app.get("/category/:name", async (req, res) => {
 
   } catch (err) {
     console.log(err);
-    res.send("Error loading category page");
+    res.send("Error loading category");
   }
 });
 
-/* ===== NEWS DETAIL PAGE ===== */
+/* ================= NEWS DETAIL ================= */
+
 app.get("/news/:id", async (req, res) => {
   try {
 
-    const newsItem = await News.findById(req.params.id);
+    const newsItem = await News.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { views: 1 } },
+      { new: true }
+    );
 
-    if (!newsItem) {
-      return res.send("News not found");
-    }
+    if (!newsItem) return res.send("News not found");
 
     res.render("news-detail", { newsItem });
 
   } catch (err) {
     console.log(err);
-    res.send("Error loading news detail");
+    res.send("Error loading news");
   }
 });
 
-/* ===== ADMIN PAGE ===== */
+/* ================= ADMIN ================= */
+
 app.get("/admin", async (req, res) => {
   try {
     const news = await News.find().sort({ createdAt: -1 });
     res.render("admin", { news });
   } catch (err) {
-    console.log(err);
-    res.send("Error loading admin");
+    res.send("Admin error");
   }
 });
 
-/* ===== ADD NEWS ===== */
+/* ================= ADD NEWS ================= */
+
 app.post("/add-news", async (req, res) => {
   try {
 
@@ -121,7 +135,8 @@ app.post("/add-news", async (req, res) => {
       content: req.body.content,
       image: req.body.image,
       category: req.body.category,
-      breaking: req.body.breaking ? true : false
+      breaking: req.body.breaking ? true : false,
+      topNews: req.body.topNews ? true : false
     });
 
     await newNews.save();
@@ -133,14 +148,14 @@ app.post("/add-news", async (req, res) => {
   }
 });
 
-/* ===== DELETE NEWS ===== */
+/* ================= DELETE NEWS ================= */
+
 app.post("/delete/:id", async (req, res) => {
   try {
     await News.findByIdAndDelete(req.params.id);
     res.redirect("/admin");
   } catch (err) {
-    console.log(err);
-    res.send("Error deleting news");
+    res.send("Delete error");
   }
 });
 
@@ -149,5 +164,5 @@ app.post("/delete/:id", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("🚀 Server running on port " + PORT);
+  console.log("Server running on port " + PORT);
 });
