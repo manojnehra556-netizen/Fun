@@ -7,18 +7,99 @@
 
 <style>
 body{margin:0;font-family:Arial;background:#f4f4f4}
-header{background:#c40000;color:white;text-align:center;padding:15px}
-.tagline{color:#ffd700;font-size:14px}
-.breaking-bar{background:black;color:white;padding:8px;overflow:hidden;white-space:nowrap}
-.breaking-label{background:red;padding:4px 8px;font-weight:bold;animation:blink 1s infinite}
-@keyframes blink{50%{opacity:0}}
-.breaking-scroll{display:inline-block;animation:scroll 15s linear infinite}
-@keyframes scroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
-.section{padding:15px}
-.section h2{color:#c40000;border-bottom:2px solid #c40000}
-.card{background:white;padding:10px;margin:10px 0;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
-.card a{text-decoration:none;color:black}
-.read-more{color:red;font-weight:bold;text-decoration:none}
+
+/* HEADER */
+header{
+  background:#c40000;
+  color:white;
+  text-align:center;
+  padding:15px;
+}
+
+.tagline{
+  color:#ffd700;
+  font-size:14px;
+}
+
+/* BREAKING BAR */
+.breaking-bar{
+  background:black;
+  color:white;
+  padding:8px;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.breaking-label{
+  background:red;
+  padding:4px 8px;
+  font-weight:bold;
+  animation:blink 1s infinite;
+}
+
+@keyframes blink{
+  50%{opacity:0}
+}
+
+.breaking-scroll{
+  display:inline-block;
+  animation:scroll 15s linear infinite;
+}
+
+@keyframes scroll{
+  0%{transform:translateX(100%)}
+  100%{transform:translateX(-100%)}
+}
+
+.breaking-scroll a{
+  color:white;
+  margin-right:40px;
+  text-decoration:none;
+}
+
+/* CATEGORY BAR */
+.category-bar{
+  background:#fff;
+  padding:10px;
+  text-align:center;
+  border-bottom:2px solid #c40000;
+}
+
+.category-bar a{
+  margin:0 12px;
+  text-decoration:none;
+  font-weight:bold;
+  color:#c40000;
+}
+
+/* SECTION */
+.section{
+  padding:15px;
+}
+
+.section h2{
+  color:#c40000;
+  border-bottom:2px solid #c40000;
+}
+
+.card{
+  background:white;
+  padding:10px;
+  margin:10px 0;
+  border-radius:6px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card a{
+  text-decoration:none;
+  color:black;
+}
+
+.read-more{
+  color:red;
+  font-weight:bold;
+  text-decoration:none;
+}
 </style>
 </head>
 
@@ -29,17 +110,28 @@ header{background:#c40000;color:white;text-align:center;padding:15px}
 <div class="tagline">सच की आवाज़, आपके साथ</div>
 </header>
 
+<!-- BREAKING -->
 <div class="breaking-bar">
 <span class="breaking-label">🔴 BREAKING</span>
 <div class="breaking-scroll">
 <% breakingNews.forEach(item => { %>
-<a href="/news/<%= item._id %>" style="color:white;margin-right:40px;">
-<%= item.title %>
-</a>
+<a href="/news/<%= item._id %>"><%= item.title %></a>
 <% }) %>
 </div>
 </div>
 
+<!-- CATEGORY HORIZONTAL LINE -->
+<div class="category-bar">
+<a href="/">Home</a>
+<a href="/category/Local">Local</a>
+<a href="/category/Sports">Sports</a>
+<a href="/category/Business">Business</a>
+<a href="/category/Politics">Politics</a>
+<a href="/category/Entertainment">Entertainment</a>
+<a href="/category/Technology">Technology</a>
+</div>
+
+<!-- TOP NEWS -->
 <div class="section">
 <h2>🔥 TOP NEWS</h2>
 <% topNews.forEach(item => { %>
@@ -49,7 +141,7 @@ header{background:#c40000;color:white;text-align:center;padding:15px}
 <% }) %>
 </div>
 
-<!-- Example Local Section -->
+<!-- LOCAL PREVIEW -->
 <div class="section">
 <h2>🏘 Local News</h2>
 <% local.forEach(item => { %>
