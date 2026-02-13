@@ -11,10 +11,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-/* ================= MONGODB CONNECTION ================= */
+/* ================= MONGODB ================= */
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected Successfully"))
+  .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.log("❌ Mongo Error:", err));
 
 /* ================= SCHEMA ================= */
@@ -33,9 +33,8 @@ const newsSchema = new mongoose.Schema({
 
 const News = mongoose.model("News", newsSchema);
 
-/* ================= ROUTES ================= */
+/* ================= HOMEPAGE ================= */
 
-/* ---- Homepage (Local First + Breaking Line) ---- */
 app.get("/", async (req, res) => {
   try {
 
@@ -47,23 +46,12 @@ app.get("/", async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
 
-    const local = await News.find({ category: "Local" })
-      .sort({ createdAt: -1 });
-
-    const sports = await News.find({ category: "Sports" })
-      .sort({ createdAt: -1 });
-
-    const business = await News.find({ category: "Business" })
-      .sort({ createdAt: -1 });
-
-    const politics = await News.find({ category: "Politics" })
-      .sort({ createdAt: -1 });
-
-    const entertainment = await News.find({ category: "Entertainment" })
-      .sort({ createdAt: -1 });
-
-    const technology = await News.find({ category: "Technology" })
-      .sort({ createdAt: -1 });
+    const local = await News.find({ category: "Local" }).sort({ createdAt: -1 });
+    const sports = await News.find({ category: "Sports" }).sort({ createdAt: -1 });
+    const business = await News.find({ category: "Business" }).sort({ createdAt: -1 });
+    const politics = await News.find({ category: "Politics" }).sort({ createdAt: -1 });
+    const entertainment = await News.find({ category: "Entertainment" }).sort({ createdAt: -1 });
+    const technology = await News.find({ category: "Technology" }).sort({ createdAt: -1 });
 
     res.render("index", {
       breakingNews,
@@ -81,18 +69,40 @@ app.get("/", async (req, res) => {
     res.send("Error loading homepage");
   }
 });
-/* ---- Admin Page ---- */
+
+/* ================= NEWS DETAIL ================= */
+
+app.get("/news/:id", async (req, res) => {
+  try {
+
+    const newsItem = await News.findById(req.params.id);
+
+    if (!newsItem) {
+      return res.send("News not found");
+    }
+
+    res.render("news-detail", { newsItem });
+
+  } catch (err) {
+    console.log(err);
+    res.send("Error loading news detail");
+  }
+});
+
+/* ================= ADMIN ================= */
+
 app.get("/admin", async (req, res) => {
   try {
     const news = await News.find().sort({ createdAt: -1 });
     res.render("admin", { news });
   } catch (err) {
     console.log(err);
-    res.send("Error loading admin panel");
+    res.send("Error loading admin");
   }
 });
 
-/* ---- Add News ---- */
+/* ================= ADD NEWS ================= */
+
 app.post("/add-news", async (req, res) => {
   try {
 
@@ -113,7 +123,8 @@ app.post("/add-news", async (req, res) => {
   }
 });
 
-/* ---- Delete News ---- */
+/* ================= DELETE NEWS ================= */
+
 app.post("/delete/:id", async (req, res) => {
   try {
     await News.findByIdAndDelete(req.params.id);
