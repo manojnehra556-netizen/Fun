@@ -1,42 +1,187 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - किठाना न्यूज</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f6f9;
+}
+
+/* HEADER */
+header{
+  background:#c40000;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+header h1{
+  margin:0;
+}
+
+/* CONTAINER */
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+/* CARD */
+.card{
+  background:white;
+  padding:20px;
+  margin-bottom:20px;
+  border-radius:10px;
+  box-shadow:0 3px 12px rgba(0,0,0,0.1);
+}
+
+.card h2{
+  margin-top:0;
+  color:#c40000;
+}
+
+/* FORM */
+input, textarea, select{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  margin-bottom:15px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+textarea{
+  resize:none;
+  height:120px;
+}
+
+/* BUTTON */
+button{
+  background:#c40000;
+  color:white;
+  border:none;
+  padding:10px 15px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+button:hover{
+  background:#a00000;
+}
+
+/* BREAKING TOGGLE */
+.toggle{
+  display:flex;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.toggle input{
+  margin-right:8px;
+  width:auto;
+}
+
+/* NEWS LIST */
+.news-item{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.news-item:last-child{
+  border-bottom:none;
+}
+
+.delete-btn{
+  background:black;
+}
+
+.delete-btn:hover{
+  background:#333;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  .news-item{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+</style>
 </head>
+
 <body>
 
-<h1>Add News</h1>
+<header>
+  <h1>किठाना न्यूज - Admin Dashboard</h1>
+</header>
 
-<form action="/add-news" method="POST">
-<input name="title" placeholder="Title" required><br><br>
-<textarea name="content" placeholder="Content" required></textarea><br><br>
-<input name="image" placeholder="Image URL"><br><br>
+<div class="container">
 
-<select name="category">
-<option value="Local">Local</option>
-<option value="Sports">Sports</option>
-<option value="Business">Business</option>
-<option value="Politics">Politics</option>
-<option value="Entertainment">Entertainment</option>
-<option value="Technology">Technology</option>
-</select><br><br>
+  <!-- ADD NEWS CARD -->
+  <div class="card">
+    <h2>📰 नई खबर जोड़ें</h2>
 
-<label><input type="checkbox" name="breaking"> Breaking</label><br><br>
+    <form action="/add-news" method="POST">
 
-<button type="submit">Publish</button>
-</form>
+      <label>शीर्षक</label>
+      <input type="text" name="title" required>
 
-<h2>Existing News</h2>
+      <label>समाचार विवरण</label>
+      <textarea name="content" required></textarea>
 
-<% news.forEach(item => { %>
-<div>
-<%= item.title %>
-<form action="/delete/<%= item._id %>" method="POST">
-<button>Delete</button>
-</form>
+      <label>Image URL (optional)</label>
+      <input type="text" name="image">
+
+      <label>श्रेणी</label>
+      <select name="category" required>
+        <option value="Local">Local</option>
+        <option value="Sports">Sports</option>
+        <option value="Business">Business</option>
+        <option value="Politics">Politics</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Technology">Technology</option>
+      </select>
+
+      <div class="toggle">
+        <input type="checkbox" name="breaking">
+        <label>Breaking News</label>
+      </div>
+
+      <button type="submit">Publish News</button>
+
+    </form>
+  </div>
+
+  <!-- EXISTING NEWS CARD -->
+  <div class="card">
+    <h2>📋 मौजूदा खबरें</h2>
+
+    <% news.forEach(function(item){ %>
+      <div class="news-item">
+        <div>
+          <strong><%= item.title %></strong><br>
+          <small><%= item.category %></small>
+        </div>
+
+        <form action="/delete/<%= item._id %>" method="POST">
+          <button class="delete-btn">Delete</button>
+        </form>
+      </div>
+    <% }) %>
+
+  </div>
+
 </div>
-<% }) %>
 
 </body>
 </html>
