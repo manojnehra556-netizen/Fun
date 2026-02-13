@@ -1,19 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
+    <meta charset="UTF-8">
     <title>किठाना न्यूज</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: #c40000;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .breaking {
+            background: yellow;
+            color: black;
+            padding: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        .news-card {
+            background: white;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .news-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            color: #c40000;
+        }
+
+        .news-card p {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .category {
+            font-size: 12px;
+            color: white;
+            background: #007bff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>किठाना न्यूज</h1>
+<header>
+    <h1>किठाना न्यूज</h1>
+</header>
 
-<% news.forEach(function(item){ %>
-    <div style="border:1px solid black; padding:10px; margin:10px;">
-        <h2><%= item.title %></h2>
-        <p><%= item.content %></p>
-        <small>Category: <%= item.category %></small>
-    </div>
-<% }) %>
+<div class="breaking">
+    🔴 ब्रेकिंग न्यूज़ – ताज़ा खबरें सबसे पहले
+</div>
+
+<div class="container">
+
+    <% if(news.length === 0){ %>
+        <p>अभी कोई समाचार उपलब्ध नहीं है।</p>
+    <% } %>
+
+    <% news.forEach(function(item){ %>
+        <div class="news-card">
+            <div class="category"><%= item.category %></div>
+            <h2><%= item.title %></h2>
+            <p><%= item.content.substring(0, 150) %>...</p>
+        </div>
+    <% }) %>
+
+</div>
+
+<footer>
+    © 2026 किठाना न्यूज | सभी अधिकार सुरक्षित
+</footer>
 
 </body>
 </html>
