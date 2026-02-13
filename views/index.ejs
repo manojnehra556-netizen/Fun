@@ -1,0 +1,10 @@
+<h1>किठाना न्यूज</h1>
+
+<% news.forEach(function(item){ %>
+  <div>
+    <h2><%= item.title %></h2>
+    <p><%= item.content %></p>
+    <small><%= item.category %></small>
+    <hr>
+  </div>
+<% }); %>
