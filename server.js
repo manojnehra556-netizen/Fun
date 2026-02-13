@@ -35,17 +35,30 @@ const News = mongoose.model("News", newsSchema);
 
 /* ================= ROUTES ================= */
 
-/* ---- Homepage (Category Wise) ---- */
+/* ---- Homepage (Local First + Breaking Line) ---- */
 app.get("/", async (req, res) => {
   try {
-    const sports = await News.find({ category: "Sports" }).sort({ createdAt: -1 });
-    const local = await News.find({ category: "Local" }).sort({ createdAt: -1 });
-    const business = await News.find({ category: "Business" }).sort({ createdAt: -1 });
-    const politics = await News.find({ category: "Politics" }).sort({ createdAt: -1 });
+
+    const breakingNews = await News.find({ breaking: true })
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    const local = await News.find({ category: "Local" })
+      .sort({ createdAt: -1 });
+
+    const sports = await News.find({ category: "Sports" })
+      .sort({ createdAt: -1 });
+
+    const business = await News.find({ category: "Business" })
+      .sort({ createdAt: -1 });
+
+    const politics = await News.find({ category: "Politics" })
+      .sort({ createdAt: -1 });
 
     res.render("index", {
-      sports,
+      breakingNews,
       local,
+      sports,
       business,
       politics
     });
@@ -60,8 +73,13 @@ app.get("/", async (req, res) => {
 app.get("/news/:id", async (req, res) => {
   try {
     const newsItem = await News.findById(req.params.id);
-    if (!newsItem) return res.send("News not found");
+
+    if (!newsItem) {
+      return res.send("News not found");
+    }
+
     res.render("news-detail", { newsItem });
+
   } catch (err) {
     console.log(err);
     res.send("Error loading news");
@@ -75,13 +93,14 @@ app.get("/admin", async (req, res) => {
     res.render("admin", { news });
   } catch (err) {
     console.log(err);
-    res.send("Error loading admin");
+    res.send("Error loading admin panel");
   }
 });
 
 /* ---- Add News ---- */
 app.post("/add-news", async (req, res) => {
   try {
+
     const newNews = new News({
       title: req.body.title,
       content: req.body.content,
