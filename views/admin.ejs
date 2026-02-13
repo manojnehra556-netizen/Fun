@@ -1,22 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-    <title>Admin Panel</title>
+    <meta charset="UTF-8">
+    <title>Admin Panel - किठाना न्यूज</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+
+        header {
+            background: #c40000;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            background: #c40000;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #a00000;
+        }
+
+        .news-item {
+            background: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .delete-btn {
+            background: black;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Add News</h1>
+<header>
+    <h2>किठाना न्यूज - Admin Panel</h2>
+</header>
 
-<form action="/add-news" method="POST">
-    <input type="text" name="title" placeholder="Title" required><br><br>
-    <textarea name="content" placeholder="Content" required></textarea><br><br>
-    <select name="category">
-        <option>Sports</option>
-        <option>Politics</option>
-        <option>Local</option>
-    </select><br><br>
-    <button type="submit">Publish</button>
-</form>
+<div class="container">
+
+    <div class="card">
+        <h3>नई खबर जोड़ें</h3>
+
+        <form action="/add-news" method="POST">
+
+            <input type="text" name="title" placeholder="समाचार शीर्षक" required>
+
+            <textarea name="content" placeholder="समाचार विवरण" rows="5" required></textarea>
+
+            <input type="text" name="image" placeholder="Image URL (optional)">
+
+            <select name="category" required>
+                <option value="">श्रेणी चुनें</option>
+                <option value="Sports">Sports</option>
+                <option value="Politics">Politics</option>
+                <option value="Local">Local</option>
+                <option value="Business">Business</option>
+            </select>
+
+            <label>
+                <input type="checkbox" name="breaking">
+                Breaking News
+            </label>
+
+            <button type="submit">Publish News</button>
+
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>मौजूदा खबरें</h3>
+
+        <% news.forEach(function(item){ %>
+            <div class="news-item">
+                <strong><%= item.title %></strong>
+                <form action="/delete/<%= item._id %>" method="POST">
+                    <button class="delete-btn">Delete</button>
+                </form>
+            </div>
+        <% }) %>
+
+    </div>
+
+</div>
 
 </body>
 </html>
