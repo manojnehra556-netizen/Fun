@@ -6,59 +6,148 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{font-family:Arial;background:#f4f4f4;margin:0}
-header{background:#c40000;color:white;padding:15px;text-align:center}
-.section{padding:15px}
-.section h2{color:#c40000;border-bottom:2px solid #c40000}
+body{font-family:Arial;margin:0;background:#f4f4f4}
+
+header{
+  background:#c40000;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+/* Breaking Banner */
+.breaking-bar{
+  background:black;
+  color:white;
+  padding:8px;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.breaking-bar span{
+  color:yellow;
+  font-weight:bold;
+}
+
+.container{
+  padding:15px;
+}
+
+.nav-buttons{
+  margin-bottom:15px;
+}
+
+.nav-buttons button{
+  padding:8px 12px;
+  margin-right:8px;
+  border:none;
+  background:#c40000;
+  color:white;
+  cursor:pointer;
+  border-radius:4px;
+}
+
+.section{
+  margin-bottom:30px;
+}
+
 .card{
   background:white;
-  padding:12px;
+  padding:10px;
   margin:10px 0;
   border-radius:6px;
   box-shadow:0 2px 6px rgba(0,0,0,0.1);
 }
-.card a{text-decoration:none;color:black}
-.card h3{margin:0}
-</style>
-</head>
 
+.card a{
+  text-decoration:none;
+  color:black;
+}
+
+</style>
+
+<script>
+function showSection(id){
+  document.querySelectorAll(".section").forEach(sec => sec.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+</script>
+
+</head>
 <body>
 
 <header>
   <h1>किठाना न्यूज</h1>
 </header>
 
-<div class="section">
-  <h2>🏏 Sports</h2>
-  <% sports.forEach(item => { %>
-    <div class="card">
-      <a href="/news/<%= item._id %>">
-        <h3><%= item.title %></h3>
-      </a>
-    </div>
+<!-- Breaking News Line -->
+<div class="breaking-bar">
+  <span>🔴 BREAKING:</span>
+  <% breakingNews.forEach(item => { %>
+    <a href="/news/<%= item._id %>" style="color:white; margin-right:25px;">
+      <%= item.title %>
+    </a>
   <% }) %>
 </div>
 
-<div class="section">
-  <h2>🏘 Local</h2>
-  <% local.forEach(item => { %>
-    <div class="card">
-      <a href="/news/<%= item._id %>">
-        <h3><%= item.title %></h3>
-      </a>
-    </div>
-  <% }) %>
-</div>
+<div class="container">
 
-<div class="section">
-  <h2>💼 Business</h2>
-  <% business.forEach(item => { %>
-    <div class="card">
-      <a href="/news/<%= item._id %>">
-        <h3><%= item.title %></h3>
-      </a>
-    </div>
-  <% }) %>
+  <!-- Category Switch Buttons -->
+  <div class="nav-buttons">
+    <button onclick="showSection('local')">Local</button>
+    <button onclick="showSection('sports')">Sports</button>
+    <button onclick="showSection('business')">Business</button>
+    <button onclick="showSection('politics')">Politics</button>
+  </div>
+
+  <!-- LOCAL (Default Visible) -->
+  <div class="section" id="local">
+    <h2>Local News</h2>
+    <% local.forEach(item => { %>
+      <div class="card">
+        <a href="/news/<%= item._id %>">
+          <h3><%= item.title %></h3>
+        </a>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- SPORTS -->
+  <div class="section" id="sports" style="display:none;">
+    <h2>Sports News</h2>
+    <% sports.forEach(item => { %>
+      <div class="card">
+        <a href="/news/<%= item._id %>">
+          <h3><%= item.title %></h3>
+        </a>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- BUSINESS -->
+  <div class="section" id="business" style="display:none;">
+    <h2>Business News</h2>
+    <% business.forEach(item => { %>
+      <div class="card">
+        <a href="/news/<%= item._id %>">
+          <h3><%= item.title %>
+        </a>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- POLITICS -->
+  <div class="section" id="politics" style="display:none;">
+    <h2>Politics News</h2>
+    <% politics.forEach(item => { %>
+      <div class="card">
+        <a href="/news/<%= item._id %>">
+          <h3><%= item.title %></h3>
+        </a>
+      </div>
+    <% }) %>
+  </div>
+
 </div>
 
 </body>
