@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Panel</title>
+    <title>Admin Panel</title>
 </head>
 <body>
 
-<h2>Add News</h2>
+<h1>Add News</h1>
 
 <form action="/add-news" method="POST">
-  <input name="title" placeholder="Title" required><br><br>
-  <textarea name="content" placeholder="Content" required></textarea><br><br>
-
-  <select name="category">
-    <option value="sports">Sports</option>
-    <option value="local">Local</option>
-    <option value="politics">Politics</option>
-  </select><br><br>
-
-  <button type="submit">Publish</button>
+    <input type="text" name="title" placeholder="Title" required><br><br>
+    <textarea name="content" placeholder="Content" required></textarea><br><br>
+    <select name="category">
+        <option>Sports</option>
+        <option>Politics</option>
+        <option>Local</option>
+    </select><br><br>
+    <button type="submit">Publish</button>
 </form>
 
 </body>
