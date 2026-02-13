@@ -1,0 +1,9 @@
+<h1><%= category %> News</h1>
+
+<% news.forEach(function(item){ %>
+  <div>
+    <h2><%= item.title %></h2>
+    <p><%= item.content %></p>
+    <hr>
+  </div>
+<% }); %>
