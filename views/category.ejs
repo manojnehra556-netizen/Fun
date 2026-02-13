@@ -1,40 +1,20 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title><%= category %> - किठाना न्यूज</title>
-  <link rel="stylesheet" href="/style.css">
+<meta charset="UTF-8">
+<title><%= category %> News</title>
 </head>
 <body>
+<h1><%= category %> News</h1>
 
-<header>
-  <div class="logo">किठाना न्यूज</div>
-  <p>हिंदी न्यूज</p>
-</header>
-
-<nav>
-  <a href="/">होम</a>
-  <a href="/category/local">स्थानीय</a>
-  <a href="/category/politics">राजनीति</a>
-  <a href="/category/sports">खेल</a>
-</nav>
-
-<div class="container">
-
-  <h1><%= category %> समाचार</h1>
-
-  <% news.forEach(function(item){ %>
-    <div class="news-card">
-      <h2><%= item.title %></h2>
-      <p><%= item.content %></p>
-    </div>
-  <% }); %>
-
+<% categoryNews.forEach(item => { %>
+<div style="border:1px solid #ccc;padding:10px;margin:10px;">
+<a href="/news/<%= item._id %>">
+<h3><%= item.title %></h3>
+</a>
 </div>
+<% }) %>
 
-<footer>
-  © 2026 किठाना न्यूज
-</footer>
-
+<a href="/">Back to Home</a>
 </body>
 </html>
