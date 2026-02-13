@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>किठाना न्यूज</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>किठाना न्यूज</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f4f4f4}
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f4f4;
+}
 
 /* HEADER */
 header{
   background:#c40000;
   color:white;
   text-align:center;
-  padding:15px;
+  padding:20px;
+}
+
+header h1{
+  margin:0;
+  font-size:32px;
 }
 
 .tagline{
   color:#ffd700;
-  font-size:14px;
+  margin-top:5px;
+  font-size:15px;
 }
 
 /* BREAKING BAR */
@@ -43,7 +53,7 @@ header{
 
 .breaking-scroll{
   display:inline-block;
-  animation:scroll 15s linear infinite;
+  animation:scroll 18s linear infinite;
 }
 
 @keyframes scroll{
@@ -55,21 +65,38 @@ header{
   color:white;
   margin-right:40px;
   text-decoration:none;
+  font-weight:bold;
 }
 
-/* CATEGORY BAR */
+/* CATEGORY BAR IMPROVED */
 .category-bar{
-  background:#fff;
-  padding:10px;
-  text-align:center;
-  border-bottom:2px solid #c40000;
+  background:#ffffff;
+  border-bottom:3px solid #c40000;
+  overflow-x:auto;
+  white-space:nowrap;
+  padding:12px 0;
+  scrollbar-width:none;
+}
+
+.category-bar::-webkit-scrollbar{
+  display:none;
 }
 
 .category-bar a{
-  margin:0 12px;
+  display:inline-block;
+  margin:0 15px;
   text-decoration:none;
   font-weight:bold;
+  font-size:18px;
   color:#c40000;
+  padding:6px 10px;
+  transition:0.3s;
+}
+
+.category-bar a:hover{
+  background:#c40000;
+  color:white;
+  border-radius:5px;
 }
 
 /* SECTION */
@@ -80,14 +107,15 @@ header{
 .section h2{
   color:#c40000;
   border-bottom:2px solid #c40000;
+  padding-bottom:5px;
 }
 
 .card{
   background:white;
-  padding:10px;
-  margin:10px 0;
+  padding:12px;
+  margin:12px 0;
   border-radius:6px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
 .card a{
@@ -95,10 +123,22 @@ header{
   color:black;
 }
 
+.card h3{
+  margin:0;
+  font-size:18px;
+}
+
 .read-more{
   color:red;
   font-weight:bold;
   text-decoration:none;
+  display:inline-block;
+  margin-top:5px;
+}
+
+@media(max-width:600px){
+  header h1{font-size:26px;}
+  .category-bar a{font-size:16px;}
 }
 </style>
 </head>
@@ -106,50 +146,57 @@ header{
 <body>
 
 <header>
-<h1>किठाना न्यूज</h1>
-<div class="tagline">सच की आवाज़, आपके साथ</div>
+  <h1>किठाना न्यूज</h1>
+  <div class="tagline">सच की आवाज़, आपके साथ</div>
 </header>
 
 <!-- BREAKING -->
 <div class="breaking-bar">
-<span class="breaking-label">🔴 BREAKING</span>
-<div class="breaking-scroll">
-<% breakingNews.forEach(item => { %>
-<a href="/news/<%= item._id %>"><%= item.title %></a>
-<% }) %>
-</div>
+  <span class="breaking-label">🔴 BREAKING</span>
+  <div class="breaking-scroll">
+    <% breakingNews.forEach(item => { %>
+      <a href="/news/<%= item._id %>"><%= item.title %></a>
+    <% }) %>
+  </div>
 </div>
 
-<!-- CATEGORY HORIZONTAL LINE -->
+<!-- CATEGORY SCROLL BAR -->
 <div class="category-bar">
-<a href="/">Home</a>
-<a href="/category/Local">Local</a>
-<a href="/category/Sports">Sports</a>
-<a href="/category/Business">Business</a>
-<a href="/category/Politics">Politics</a>
-<a href="/category/Entertainment">Entertainment</a>
-<a href="/category/Technology">Technology</a>
+  <a href="/">Home</a>
+  <a href="/category/Local">Local</a>
+  <a href="/category/Sports">Sports</a>
+  <a href="/category/Business">Business</a>
+  <a href="/category/Politics">Politics</a>
+  <a href="/category/Entertainment">Entertainment</a>
+  <a href="/category/Technology">Technology</a>
 </div>
 
 <!-- TOP NEWS -->
 <div class="section">
-<h2>🔥 TOP NEWS</h2>
-<% topNews.forEach(item => { %>
-<div class="card">
-<a href="/news/<%= item._id %>"><h3><%= item.title %></h3></a>
-</div>
-<% }) %>
+  <h2>🔥 TOP NEWS</h2>
+
+  <% topNews.forEach(item => { %>
+    <div class="card">
+      <a href="/news/<%= item._id %>">
+        <h3><%= item.title %></h3>
+      </a>
+    </div>
+  <% }) %>
 </div>
 
 <!-- LOCAL PREVIEW -->
 <div class="section">
-<h2>🏘 Local News</h2>
-<% local.forEach(item => { %>
-<div class="card">
-<a href="/news/<%= item._id %>"><h3><%= item.title %></h3></a>
-</div>
-<% }) %>
-<a class="read-more" href="/category/Local">Read More →</a>
+  <h2>🏘 Local News</h2>
+
+  <% local.forEach(item => { %>
+    <div class="card">
+      <a href="/news/<%= item._id %>">
+        <h3><%= item.title %></h3>
+      </a>
+    </div>
+  <% }) %>
+
+  <a class="read-more" href="/category/Local">Read More →</a>
 </div>
 
 </body>
