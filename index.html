@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>CityPulse News</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>किठाना न्यूज | हिंदी न्यूज</title>
 
 <style>
 body{
@@ -14,47 +14,50 @@ body{
 
 /* HEADER */
 header{
-  background:#111827;
+  background:#b91c1c;
   color:#fff;
   padding:20px;
   text-align:center;
 }
 
 .logo{
-  font-size:36px;
+  font-size:42px;
   font-weight:900;
 }
 
 .tagline{
-  font-size:16px;
-  opacity:.8;
+  font-size:18px;
+  margin-top:5px;
+  opacity:.9;
 }
 
-/* NAV */
+/* NAVIGATION */
 nav{
-  background:#1f2937;
+  background:#111827;
   display:flex;
   justify-content:center;
   gap:25px;
   padding:12px;
+  flex-wrap:wrap;
 }
 
 nav a{
   color:#fff;
   text-decoration:none;
   font-weight:700;
+  font-size:16px;
 }
 
-/* BREAKING NEWS */
+/* BREAKING */
 .breaking{
-  background:red;
+  background:#ef4444;
   color:#fff;
-  padding:8px;
   text-align:center;
+  padding:8px;
   font-weight:800;
 }
 
-/* CONTAINER */
+/* MAIN CONTAINER */
 .container{
   max-width:1100px;
   margin:auto;
@@ -112,7 +115,7 @@ footer{
   margin-top:40px;
 }
 
-/* MOBILE */
+/* MOBILE RESPONSIVE */
 @media(max-width:768px){
   .grid{
     grid-template-columns:1fr;
@@ -124,21 +127,21 @@ footer{
 <body>
 
 <header>
-  <div class="logo">CityPulse News</div>
-  <div class="tagline">Your Trusted Local News Source</div>
+  <div class="logo">किठाना न्यूज</div>
+  <div class="tagline">हिंदी न्यूज</div>
 </header>
 
 <nav>
-  <a href="#">Home</a>
-  <a href="#">Local</a>
-  <a href="#">National</a>
-  <a href="#">Sports</a>
-  <a href="#">Business</a>
-  <a href="#">Contact</a>
+  <a href="#">होम</a>
+  <a href="#">स्थानीय</a>
+  <a href="#">राजनीति</a>
+  <a href="#">खेल</a>
+  <a href="#">व्यापार</a>
+  <a href="#">संपर्क</a>
 </nav>
 
 <div class="breaking">
-  🔴 Breaking: Major development in city infrastructure project announced
+  🔴 ब्रेकिंग न्यूज़: क्षेत्र में नई विकास योजना की घोषणा
 </div>
 
 <div class="container">
@@ -147,11 +150,11 @@ footer{
     <!-- MAIN NEWS -->
     <div class="main-news">
       <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c" alt="news">
-      <h2>City Announces New Development Plan for 2026</h2>
+      <h2>किठाना क्षेत्र में बड़ी सड़क परियोजना की शुरुआत</h2>
       <p>
-        The city administration has unveiled a comprehensive development 
-        strategy aimed at improving roads, public transport and safety.
-        Officials say the project will begin next month.
+        किठाना क्षेत्र में आज नई सड़क परियोजना का उद्घाटन किया गया।
+        प्रशासन के अनुसार इस परियोजना से यातायात में सुधार होगा और
+        स्थानीय लोगों को बड़ी सुविधा मिलेगी।
       </p>
     </div>
 
@@ -159,18 +162,18 @@ footer{
     <div class="side-news">
 
       <div class="card">
-        <h4>Local Market Sees Record Growth</h4>
-        <p>Business activity increases as festive season approaches.</p>
+        <h4>स्थानीय बाजार में रौनक</h4>
+        <p>त्योहारी सीजन के चलते बाजारों में भीड़ बढ़ी।</p>
       </div>
 
       <div class="card">
-        <h4>Sports: Team Wins Championship</h4>
-        <p>The local team secured victory in the final match yesterday.</p>
+        <h4>खेल: टीम ने जीता फाइनल मुकाबला</h4>
+        <p>स्थानीय टीम ने शानदार प्रदर्शन करते हुए जीत दर्ज की।</p>
       </div>
 
       <div class="card">
-        <h4>Weather Update</h4>
-        <p>Rain expected in northern areas this weekend.</p>
+        <h4>मौसम अपडेट</h4>
+        <p>आने वाले दो दिनों में हल्की बारिश की संभावना।</p>
       </div>
 
     </div>
@@ -179,7 +182,7 @@ footer{
 </div>
 
 <footer>
-  © 2026 CityPulse News | All Rights Reserved
+  © 2026 किठाना न्यूज | सभी अधिकार सुरक्षित
 </footer>
 
 </body>
