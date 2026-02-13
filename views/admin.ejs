@@ -1,129 +1,42 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel - किठाना न्यूज</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
-
-        header {
-            background: #c40000;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .container {
-            padding: 20px;
-            max-width: 600px;
-            margin: auto;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-        button {
-            background: #c40000;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #a00000;
-        }
-
-        .news-item {
-            background: #fff;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-        }
-
-        .delete-btn {
-            background: black;
-            margin-top: 5px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Admin</title>
 </head>
 <body>
 
-<header>
-    <h2>किठाना न्यूज - Admin Panel</h2>
-</header>
+<h1>Add News</h1>
 
-<div class="container">
+<form action="/add-news" method="POST">
+<input name="title" placeholder="Title" required><br><br>
+<textarea name="content" placeholder="Content" required></textarea><br><br>
+<input name="image" placeholder="Image URL"><br><br>
 
-    <div class="card">
-        <h3>नई खबर जोड़ें</h3>
+<select name="category">
+<option value="Local">Local</option>
+<option value="Sports">Sports</option>
+<option value="Business">Business</option>
+<option value="Politics">Politics</option>
+<option value="Entertainment">Entertainment</option>
+<option value="Technology">Technology</option>
+</select><br><br>
 
-        <form action="/add-news" method="POST">
+<label><input type="checkbox" name="breaking"> Breaking</label><br><br>
 
-            <input type="text" name="title" placeholder="समाचार शीर्षक" required>
+<button type="submit">Publish</button>
+</form>
 
-            <textarea name="content" placeholder="समाचार विवरण" rows="5" required></textarea>
+<h2>Existing News</h2>
 
-            <input type="text" name="image" placeholder="Image URL (optional)">
-
-            <select name="category" required>
-                <option value="">श्रेणी चुनें</option>
-                <option value="Sports">Sports</option>
-                <option value="Politics">Politics</option>
-                <option value="Local">Local</option>
-                <option value="Business">Business</option>
-            </select>
-
-            <label>
-                <input type="checkbox" name="breaking">
-                Breaking News
-            </label>
-
-            <button type="submit">Publish News</button>
-
-        </form>
-    </div>
-
-    <div class="card">
-        <h3>मौजूदा खबरें</h3>
-
-        <% news.forEach(function(item){ %>
-            <div class="news-item">
-                <strong><%= item.title %></strong>
-                <form action="/delete/<%= item._id %>" method="POST">
-                    <button class="delete-btn">Delete</button>
-                </form>
-            </div>
-        <% }) %>
-
-    </div>
-
+<% news.forEach(item => { %>
+<div>
+<%= item.title %>
+<form action="/delete/<%= item._id %>" method="POST">
+<button>Delete</button>
+</form>
 </div>
+<% }) %>
 
 </body>
 </html>
