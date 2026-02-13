@@ -8,19 +8,22 @@ const app = express();
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
 app.set("view engine", "ejs");
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+// ================== MongoDB Connection ==================
 
-// News Schema
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected Successfully"))
+  .catch(err => console.log("❌ Mongo Error:", err));
+
+// ================== Schema ==================
+
 const newsSchema = new mongoose.Schema({
   title: String,
   content: String,
+  image: String,
   category: String,
+  breaking: Boolean,
   createdAt: {
     type: Date,
     default: Date.now
@@ -29,7 +32,7 @@ const newsSchema = new mongoose.Schema({
 
 const News = mongoose.model("News", newsSchema);
 
-// ================= ROUTES =================
+// ================== ROUTES ==================
 
 // Homepage
 app.get("/", async (req, res) => {
@@ -43,33 +46,50 @@ app.get("/", async (req, res) => {
 });
 
 // Admin Page
-app.get("/admin", (req, res) => {
-  res.render("admin");
+app.get("/admin", async (req, res) => {
+  try {
+    const news = await News.find().sort({ createdAt: -1 });
+    res.render("admin", { news });
+  } catch (err) {
+    console.log(err);
+    res.send("Error loading admin panel");
+  }
 });
 
 // Add News
 app.post("/add-news", async (req, res) => {
-  const { title, content, category } = req.body;
-
   try {
     const newNews = new News({
-      title,
-      content,
-      category
+      title: req.body.title,
+      content: req.body.content,
+      image: req.body.image,
+      category: req.body.category,
+      breaking: req.body.breaking ? true : false
     });
 
     await newNews.save();
-    res.redirect("/");
+    res.redirect("/admin");
   } catch (err) {
     console.log(err);
     res.send("Error saving news");
   }
 });
 
-// ================= SERVER =================
+// Delete News
+app.post("/delete/:id", async (req, res) => {
+  try {
+    await News.findByIdAndDelete(req.params.id);
+    res.redirect("/admin");
+  } catch (err) {
+    console.log(err);
+    res.send("Error deleting news");
+  }
+});
+
+// ================== SERVER ==================
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+  console.log("🚀 Server running on port " + PORT);
 });
