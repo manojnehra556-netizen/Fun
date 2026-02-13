@@ -43,6 +43,10 @@ app.get("/", async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
 
+    const topNews = await News.find()
+      .sort({ createdAt: -1 })
+      .limit(5);
+
     const local = await News.find({ category: "Local" })
       .sort({ createdAt: -1 });
 
@@ -55,12 +59,21 @@ app.get("/", async (req, res) => {
     const politics = await News.find({ category: "Politics" })
       .sort({ createdAt: -1 });
 
+    const entertainment = await News.find({ category: "Entertainment" })
+      .sort({ createdAt: -1 });
+
+    const technology = await News.find({ category: "Technology" })
+      .sort({ createdAt: -1 });
+
     res.render("index", {
       breakingNews,
+      topNews,
       local,
       sports,
       business,
-      politics
+      politics,
+      entertainment,
+      technology
     });
 
   } catch (err) {
@@ -68,24 +81,6 @@ app.get("/", async (req, res) => {
     res.send("Error loading homepage");
   }
 });
-
-/* ---- News Detail Page ---- */
-app.get("/news/:id", async (req, res) => {
-  try {
-    const newsItem = await News.findById(req.params.id);
-
-    if (!newsItem) {
-      return res.send("News not found");
-    }
-
-    res.render("news-detail", { newsItem });
-
-  } catch (err) {
-    console.log(err);
-    res.send("Error loading news");
-  }
-});
-
 /* ---- Admin Page ---- */
 app.get("/admin", async (req, res) => {
   try {
