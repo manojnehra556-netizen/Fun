@@ -5,63 +5,71 @@ const path = require("path");
 
 const app = express();
 
-/* ===== Middleware ===== */
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
+
 app.set("view engine", "ejs");
 
-/* ===== MongoDB Connection ===== */
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
-/* ===== Schema ===== */
+// News Schema
 const newsSchema = new mongoose.Schema({
   title: String,
   content: String,
   category: String,
-  date: { type: Date, default: Date.now }
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 const News = mongoose.model("News", newsSchema);
 
-/* ===== Routes ===== */
+// ================= ROUTES =================
 
 // Homepage
 app.get("/", async (req, res) => {
-  const news = await News.find().sort({ date: -1 });
-  res.render("index", { news });
+  try {
+    const news = await News.find().sort({ createdAt: -1 });
+    res.render("index", { news });
+  } catch (err) {
+    console.log(err);
+    res.send("Error loading homepage");
+  }
 });
 
-// Category Page
-app.get("/category/:name", async (req, res) => {
-  const news = await News.find({ category: req.params.name });
-  res.render("category", { news, category: req.params.name });
-});
-
-// Admin Panel
+// Admin Page
 app.get("/admin", (req, res) => {
   res.render("admin");
 });
 
 // Add News
 app.post("/add-news", async (req, res) => {
-  const newNews = new News({
-    title: req.body.title,
-    content: req.body.content,
-    category: req.body.category
-  });
+  const { title, content, category } = req.body;
 
-  await newNews.save();
-  res.redirect("/");
+  try {
+    const newNews = new News({
+      title,
+      content,
+      category
+    });
+
+    await newNews.save();
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+    res.send("Error saving news");
+  }
 });
 
-/* ===== PORT FIX (IMPORTANT FOR RENDER) ===== */
+// ================= SERVER =================
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log("Server running on port " + PORT);
 });
