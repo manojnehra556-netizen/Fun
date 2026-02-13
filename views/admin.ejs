@@ -1,0 +1,14 @@
+<h2>Add News</h2>
+
+<form action="/add-news" method="POST">
+  <input name="title" placeholder="News Title" required><br><br>
+  <textarea name="content" placeholder="News Content" required></textarea><br><br>
+
+  <select name="category">
+    <option value="sports">Sports</option>
+    <option value="local">Local</option>
+    <option value="politics">Politics</option>
+  </select><br><br>
+
+  <button type="submit">Publish</button>
+</form>
