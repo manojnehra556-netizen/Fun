@@ -166,13 +166,13 @@ app.post("/admin/add", async (req, res) => {
    DELETE NEWS (SAFE POST)
 ======================= */
 
-app.post("/admin/delete/:id", async (req, res) => {
+app.get("/admin/delete/:id", async (req, res) => {
   try {
     await News.findByIdAndDelete(req.params.id);
     res.redirect("/admin");
   } catch (err) {
-    console.log("Delete Error:", err);
-    res.send("Delete failed");
+    console.log(err);
+    res.send("Delete Error");
   }
 });
 
