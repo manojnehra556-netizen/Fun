@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>जिला अपडेट</title>
 
+<!-- Google AdSense Script -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7883082211137274"
+     crossorigin="anonymous"></script>
+
 <style>
 body{
   margin:0;
@@ -12,7 +16,6 @@ body{
   background:#f4f4f4;
 }
 
-/* HEADER */
 header{
   background:#c40000;
   color:white;
@@ -20,94 +23,8 @@ header{
   padding:20px;
 }
 
-header h1{
-  margin:0;
-  font-size:32px;
-}
-
-.tagline{
-  color:#ffd700;
-  margin-top:5px;
-  font-size:15px;
-}
-
-/* BREAKING BAR */
-.breaking-bar{
-  background:black;
-  color:white;
-  padding:8px;
-  overflow:hidden;
-  white-space:nowrap;
-}
-
-.breaking-label{
-  background:red;
-  padding:4px 8px;
-  font-weight:bold;
-  animation:blink 1s infinite;
-}
-
-@keyframes blink{
-  50%{opacity:0}
-}
-
-.breaking-scroll{
-  display:inline-block;
-  animation:scroll 18s linear infinite;
-}
-
-@keyframes scroll{
-  0%{transform:translateX(100%)}
-  100%{transform:translateX(-100%)}
-}
-
-.breaking-scroll a{
-  color:white;
-  margin-right:40px;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-/* CATEGORY BAR IMPROVED */
-.category-bar{
-  background:#ffffff;
-  border-bottom:3px solid #c40000;
-  overflow-x:auto;
-  white-space:nowrap;
-  padding:12px 0;
-  scrollbar-width:none;
-}
-
-.category-bar::-webkit-scrollbar{
-  display:none;
-}
-
-.category-bar a{
-  display:inline-block;
-  margin:0 15px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:18px;
-  color:#c40000;
-  padding:6px 10px;
-  transition:0.3s;
-}
-
-.category-bar a:hover{
-  background:#c40000;
-  color:white;
-  border-radius:5px;
-}
-
-/* SECTION */
 .section{
   padding:15px;
-}
-
-.section h2{
-  color:#c40000;
-  border-bottom:2px solid #c40000;
-  padding-bottom:5px;
 }
 
 .card{
@@ -123,22 +40,16 @@ header h1{
   color:black;
 }
 
-.card h3{
-  margin:0;
-  font-size:18px;
+.latest{
+  background:#fff3f3;
+  padding:15px;
+  margin:15px;
+  border-radius:6px;
 }
 
-.read-more{
-  color:red;
-  font-weight:bold;
-  text-decoration:none;
-  display:inline-block;
-  margin-top:5px;
-}
-
-@media(max-width:600px){
-  header h1{font-size:26px;}
-  .category-bar a{font-size:16px;}
+.ad-box{
+  margin:20px 0;
+  text-align:center;
 }
 </style>
 </head>
@@ -147,56 +58,71 @@ header h1{
 
 <header>
   <h1>जिला अपडेट</h1>
-  <div class="tagline"> “जिला अपडेट – आपके जिले की हर खबर, सबसे पहले।”</div>
+  <p>आपके जिले की हर खबर, सबसे पहले</p>
 </header>
 
-<!-- BREAKING -->
-<div class="breaking-bar">
-  <span class="breaking-label">🔴 BREAKING</span>
-  <div class="breaking-scroll">
-    <% breakingNews.forEach(item => { %>
-      <a href="/news/<%= item._id %>"><%= item.title %></a>
-    <% }) %>
-  </div>
+<!-- TOP AD BANNER -->
+<div class="ad-box">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7883082211137274"
+       data-ad-slot="YOUR_AD_SLOT_ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 </div>
 
-<!-- CATEGORY SCROLL BAR -->
-<div class="category-bar">
-  <a href="/">Home</a>
-  <a href="/category/Local">Local</a>
-  <a href="/category/Sports">Sports</a>
-  <a href="/category/Business">Business</a>
-  <a href="/category/Politics">Politics</a>
-  <a href="/category/Entertainment">Entertainment</a>
-  <a href="/category/Technology">Technology</a>
+<!-- LATEST SECTION -->
+<% if (latest.length > 0) { %>
+<div class="latest">
+  <h2>🔥 Latest News</h2>
+  <h3>
+    <a href="/news/<%= latest[0]._id %>">
+      <%= latest[0].title %>
+    </a>
+  </h3>
 </div>
+<% } %>
 
-<!-- TOP NEWS -->
+<!-- LOCAL SECTION -->
 <div class="section">
-  <h2>🔥 TOP NEWS</h2>
-
-  <% topNews.forEach(item => { %>
+  <h2>Local</h2>
+  <% local.forEach(post => { %>
     <div class="card">
-      <a href="/news/<%= item._id %>">
-        <h3><%= item.title %></h3>
+      <a href="/news/<%= post._id %>">
+        <%= post.title %>
       </a>
     </div>
   <% }) %>
+  <a href="/category/Local">Read More</a>
 </div>
 
-<!-- LOCAL PREVIEW -->
-<div class="section">
-  <h2>🏘 Local News</h2>
+<!-- MID PAGE AD -->
+<div class="ad-box">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7883082211137274"
+       data-ad-slot="YOUR_AD_SLOT_ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
 
-  <% local.forEach(item => { %>
+<!-- SPORTS SECTION -->
+<div class="section">
+  <h2>Sports</h2>
+  <% sports.forEach(post => { %>
     <div class="card">
-      <a href="/news/<%= item._id %>">
-        <h3><%= item.title %></h3>
+      <a href="/news/<%= post._id %>">
+        <%= post.title %>
       </a>
     </div>
   <% }) %>
-
-  <a class="read-more" href="/category/Local">Read More →</a>
+  <a href="/category/Sports">Read More</a>
 </div>
 
 </body>
