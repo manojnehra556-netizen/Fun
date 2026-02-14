@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - किठाना न्यूज</title>
+<title>Admin Panel - जिला अपडेट</title>
 
 <style>
 body{
@@ -12,7 +12,6 @@ body{
   background:#f4f6f9;
 }
 
-/* HEADER */
 header{
   background:#c40000;
   color:white;
@@ -20,18 +19,12 @@ header{
   text-align:center;
 }
 
-header h1{
-  margin:0;
-}
-
-/* CONTAINER */
 .container{
   max-width:1000px;
   margin:auto;
   padding:20px;
 }
 
-/* CARD */
 .card{
   background:white;
   padding:20px;
@@ -45,7 +38,6 @@ header h1{
   color:#c40000;
 }
 
-/* FORM */
 input, textarea, select{
   width:100%;
   padding:10px;
@@ -53,7 +45,6 @@ input, textarea, select{
   margin-bottom:15px;
   border-radius:6px;
   border:1px solid #ccc;
-  font-size:14px;
 }
 
 textarea{
@@ -61,18 +52,17 @@ textarea{
   height:120px;
 }
 
-/* CHECKBOX AREA */
 .options{
   display:flex;
   gap:20px;
   margin-bottom:15px;
+  flex-wrap:wrap;
 }
 
 .options label{
   font-weight:bold;
 }
 
-/* BUTTON */
 button{
   background:#c40000;
   color:white;
@@ -80,37 +70,19 @@ button{
   padding:10px 15px;
   border-radius:6px;
   cursor:pointer;
-  font-size:14px;
 }
 
 button:hover{
   background:#a00000;
 }
 
-/* NEWS LIST */
 .news-item{
   padding:12px;
   border-bottom:1px solid #eee;
   display:flex;
   justify-content:space-between;
   align-items:center;
-}
-
-.news-info{
-  max-width:75%;
-}
-
-.news-info small{
-  color:#777;
-  font-size:12px;
-}
-
-.delete-btn{
-  background:black;
-}
-
-.delete-btn:hover{
-  background:#333;
+  flex-wrap:wrap;
 }
 
 .badge{
@@ -123,11 +95,26 @@ button:hover{
   margin-right:5px;
 }
 
-@media(max-width:600px){
-  .news-item{
-    flex-direction:column;
-    align-items:flex-start;
-  }
+.live-badge{
+  background:red;
+  color:white;
+  padding:3px 6px;
+  font-size:11px;
+  border-radius:4px;
+  margin-right:5px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink{
+  50%{opacity:0.4;}
+}
+
+.delete-btn{
+  background:black;
+}
+
+.delete-btn:hover{
+  background:#333;
 }
 </style>
 </head>
@@ -135,16 +122,16 @@ button:hover{
 <body>
 
 <header>
-  <h1>किठाना न्यूज - Admin Dashboard</h1>
+  <h1>जिला अपडेट - Admin Dashboard</h1>
 </header>
 
 <div class="container">
 
-  <!-- ADD NEWS SECTION -->
+  <!-- ADD NEWS -->
   <div class="card">
     <h2>📰 नई खबर जोड़ें</h2>
 
-    <form action="/add-news" method="POST">
+    <form action="/admin/add" method="POST">
 
       <label>शीर्षक</label>
       <input type="text" name="title" required>
@@ -152,8 +139,11 @@ button:hover{
       <label>समाचार विवरण</label>
       <textarea name="content" required></textarea>
 
-      <label>Image URL (optional)</label>
+      <label>Image URL</label>
       <input type="text" name="image">
+
+      <label>Location</label>
+      <input type="text" name="location">
 
       <label>श्रेणी</label>
       <select name="category" required>
@@ -163,17 +153,23 @@ button:hover{
         <option value="Politics">Politics</option>
         <option value="Entertainment">Entertainment</option>
         <option value="Technology">Technology</option>
+        <option value="Jobs">Jobs</option>
       </select>
 
       <div class="options">
         <label>
-          <input type="checkbox" name="breaking">
-          Show in Breaking
+          <input type="checkbox" name="isBreaking">
+          Breaking
         </label>
 
         <label>
-          <input type="checkbox" name="topNews">
-          Show in Top News
+          <input type="checkbox" name="isTop">
+          Top News
+        </label>
+
+        <label>
+          <input type="checkbox" name="isLive">
+          🔴 Show as LIVE
         </label>
       </div>
 
@@ -182,33 +178,38 @@ button:hover{
     </form>
   </div>
 
-  <!-- EXISTING NEWS SECTION -->
+  <!-- NEWS LIST -->
   <div class="card">
-    <h2>📋 मौजूदा खबरें</h2>
+    <h2>📋 सभी खबरें</h2>
 
-    <% news.forEach(function(item){ %>
+    <% allNews.forEach(function(item){ %>
       <div class="news-item">
 
-        <div class="news-info">
+        <div>
           <strong><%= item.title %></strong><br>
 
-          <% if(item.breaking){ %>
+          <% if(item.isBreaking){ %>
             <span class="badge">BREAKING</span>
           <% } %>
 
-          <% if(item.topNews){ %>
+          <% if(item.isTop){ %>
             <span class="badge">TOP</span>
           <% } %>
 
+          <% if(item.isLive){ %>
+            <span class="live-badge">LIVE</span>
+          <% } %>
+
+          <br>
           <small>
             Category: <%= item.category %> |
-            👁 <%= item.views %> Views
+            Views: <%= item.views %>
           </small>
         </div>
 
-        <form action="/delete/<%= item._id %>" method="POST">
+        <a href="/admin/delete/<%= item._id %>">
           <button class="delete-btn">Delete</button>
-        </form>
+        </a>
 
       </div>
     <% }) %>
