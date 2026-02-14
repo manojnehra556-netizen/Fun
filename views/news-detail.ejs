@@ -1,135 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><%= news.title %> | Jila Update</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title><%= news.title %> | Jila Update</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body{
-            margin:0;
-            font-family: Arial, Helvetica, sans-serif;
-            background:#f4f4f4;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
 
-        header{
-            background:#c40000;
-            color:white;
-            text-align:center;
-            padding:20px;
-        }
+/* Header */
+.header {
+    background: linear-gradient(90deg, #c40000, #ff0000);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+}
 
-        header h1{
-            margin:0;
-            font-size:32px;
-        }
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
-        .container{
-            max-width:900px;
-            margin:30px auto;
-            background:white;
-            padding:25px;
-            border-radius:12px;
-            box-shadow:0 5px 15px rgba(0,0,0,0.1);
-        }
+/* Title */
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        .title{
-            font-size:28px;
-            font-weight:bold;
-            margin-bottom:10px;
-        }
+/* LIVE badge */
+.live {
+    background: red;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-left: 10px;
+    animation: pulse 1.5s infinite;
+}
 
-        .meta{
-            display:flex;
-            justify-content:space-between;
-            color:#777;
-            font-size:14px;
-            margin-bottom:15px;
-        }
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
 
-        .badge{
-            display:inline-block;
-            padding:5px 10px;
-            border-radius:20px;
-            font-size:12px;
-            font-weight:bold;
-            color:white;
-        }
+/* Meta info */
+.meta {
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 15px;
+}
 
-        .live{
-            background:#ff0000;
-            animation: blink 1s infinite;
-        }
+/* Image */
+.news-image {
+    width: 100%;
+    border-radius: 8px;
+    margin: 15px 0;
+}
 
-        @keyframes blink{
-            0%{opacity:1;}
-            50%{opacity:0.4;}
-            100%{opacity:1;}
-        }
+/* Content */
+.content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+}
 
-        .image img{
-            width:100%;
-            border-radius:10px;
-            margin-bottom:20px;
-        }
+/* Views */
+.views {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+}
 
-        .content{
-            font-size:18px;
-            line-height:1.8;
-            color:#333;
-            white-space: pre-line;
-        }
+/* Back button */
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #c40000;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.3s;
+}
 
-        .back{
-            margin-top:30px;
-        }
-
-        .back a{
-            text-decoration:none;
-            background:#c40000;
-            color:white;
-            padding:10px 18px;
-            border-radius:6px;
-        }
-
-        .views{
-            margin-top:10px;
-            font-size:14px;
-            color:#555;
-        }
-
-        @media(max-width:600px){
-            .title{
-                font-size:22px;
-            }
-        }
-    </style>
+.back-btn:hover {
+    background: #900000;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-    <h1>जिला अपडेट</h1>
-</header>
+<div class="header">
+    जिला अपडेट
+</div>
 
 <div class="container">
 
     <div class="title">
         <%= news.title %>
-
         <% if(news.isLive){ %>
-            <span class="badge live">LIVE</span>
+            <span class="live">LIVE</span>
         <% } %>
     </div>
 
     <div class="meta">
-        <div>Category: <%= news.category %></div>
-        <div><%= new Date(news.createdAt).toLocaleString() %></div>
+        Category: <%= news.category %> |
+        Location: <%= news.location || "N/A" %> |
+        <%= new Date(news.createdAt).toLocaleString() %>
     </div>
 
     <% if(news.image){ %>
-        <div class="image">
-            <img src="<%= news.image %>" alt="News Image">
-        </div>
+        <img src="<%= news.image %>" class="news-image">
     <% } %>
 
     <div class="content">
@@ -137,12 +132,10 @@
     </div>
 
     <div class="views">
-        👁️ Views: <%= news.views %>
+        👁 Views: <%= news.views %>
     </div>
 
-    <div class="back">
-        <a href="/">⬅ Back to Home</a>
-    </div>
+    <a href="/" class="back-btn">← Back to Home</a>
 
 </div>
 
