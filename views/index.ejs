@@ -159,8 +159,8 @@ header h1{
 <!-- LOCAL PREVIEW -->
 <div class="section">
   <h2>🏘 Local News</h2>
-  <% if (local && local.length > 0) { %>
-    <% local.forEach(item => { %>
+  <% if (localNews && localNews.length > 0) { %>
+<% localNews.forEach(item => { %>
       <div class="card">
         <a href="/news/<%= item._id %>">
           <h3><%= item.title %></h3>
