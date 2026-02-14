@@ -50,6 +50,7 @@ const politicsNews = await News.find({ category: "Politics" })
     localNews,
     sportsNews,
     businessNews
+    politicsNews
   });
 });
 
