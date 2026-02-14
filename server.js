@@ -1,42 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const path = require("path");
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.set("view engine", "ejs");
-
-/* ================= MONGODB ================= */
-
+// ===== MONGODB CONNECT =====
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log(err));
 
-/* ================= SCHEMA ================= */
+// ===== MIDDLEWARE =====
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
+// ===== SCHEMA =====
 const newsSchema = new mongoose.Schema({
   title: String,
   content: String,
   image: String,
   category: String,
-
-  breaking: {
-    type: Boolean,
-    default: false
-  },
-
-  topNews: {
-    type: Boolean,
-    default: false
-  },
-
-  views: {
-    type: Number,
-    default: 0
-  },
-
+  location: String,
   createdAt: {
     type: Date,
     default: Date.now
@@ -45,124 +29,70 @@ const newsSchema = new mongoose.Schema({
 
 const News = mongoose.model("News", newsSchema);
 
-/* ================= HOMEPAGE ================= */
-
+// ===== HOME ROUTE =====
 app.get("/", async (req, res) => {
   try {
 
-    const breakingNews = await News.find({ breaking: true })
+    const latest = await News.find()
       .sort({ createdAt: -1 })
-      .limit(5);
-
-    const topNews = await News.find({ topNews: true })
-      .sort({ createdAt: -1 })
-      .limit(5);
+      .limit(3);
 
     const local = await News.find({ category: "Local" })
       .sort({ createdAt: -1 })
       .limit(2);
 
+    const sports = await News.find({ category: "Sports" })
+      .sort({ createdAt: -1 })
+      .limit(2);
+
     res.render("index", {
-      breakingNews,
-      topNews,
-      local
+      latest: latest || [],
+      local: local || [],
+      sports: sports || []
     });
 
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     res.send("Error loading homepage");
   }
 });
 
-/* ================= CATEGORY PAGE ================= */
-
+// ===== CATEGORY =====
 app.get("/category/:name", async (req, res) => {
   try {
-
-    const categoryNews = await News.find({ category: req.params.name })
+    const posts = await News.find({ category: req.params.name })
       .sort({ createdAt: -1 });
 
-    res.render("category", {
-      category: req.params.name,
-      categoryNews
-    });
-
-  } catch (err) {
-    console.log(err);
-    res.send("Error loading category");
+    res.render("category", { posts: posts || [], category: req.params.name });
+  } catch (error) {
+    res.send("Category Error");
   }
 });
 
-/* ================= NEWS DETAIL ================= */
-
+// ===== DETAILS =====
 app.get("/news/:id", async (req, res) => {
   try {
-
-    const newsItem = await News.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { views: 1 } },
-      { new: true }
-    );
-
-    if (!newsItem) return res.send("News not found");
-
-    res.render("news-detail", { newsItem });
-
-  } catch (err) {
-    console.log(err);
-    res.send("Error loading news");
+    const post = await News.findById(req.params.id);
+    res.render("details", { post });
+  } catch (error) {
+    res.send("Details Error");
   }
 });
 
-/* ================= ADMIN ================= */
-
-app.get("/admin", async (req, res) => {
-  try {
-    const news = await News.find().sort({ createdAt: -1 });
-    res.render("admin", { news });
-  } catch (err) {
-    res.send("Admin error");
-  }
+// ===== ADMIN =====
+app.get("/admin", (req, res) => {
+  res.render("admin");
 });
 
-/* ================= ADD NEWS ================= */
-
-app.post("/add-news", async (req, res) => {
+app.post("/admin/add", async (req, res) => {
   try {
-
-    const newNews = new News({
-      title: req.body.title,
-      content: req.body.content,
-      image: req.body.image,
-      category: req.body.category,
-      breaking: req.body.breaking ? true : false,
-      topNews: req.body.topNews ? true : false
-    });
-
-    await newNews.save();
+    await News.create(req.body);
     res.redirect("/admin");
-
-  } catch (err) {
-    console.log(err);
-    res.send("Error saving news");
+  } catch (error) {
+    res.send("Add Error");
   }
 });
 
-/* ================= DELETE NEWS ================= */
-
-app.post("/delete/:id", async (req, res) => {
-  try {
-    await News.findByIdAndDelete(req.params.id);
-    res.redirect("/admin");
-  } catch (err) {
-    res.send("Delete error");
-  }
-});
-
-/* ================= SERVER ================= */
-
+// ===== START SERVER =====
 const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
-});
+app.listen(PORT, () => console.log("Server running on port " + PORT));
