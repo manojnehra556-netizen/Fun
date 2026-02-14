@@ -170,19 +170,30 @@ body{
 <!-- TOP NEWS -->
 <% if(topNews && topNews.length > 0){ %>
 <div class="section">
-    <h2>🔥 TOP NEWS</h2>
-    <% topNews.forEach(item => { %>
-        <div class="card">
-            <a href="/news/<%= item._id %>">
-                <%= item.title %>
-                <% if(item.isLive){ %>
-                    <span class="live">LIVE</span>
-                <% } %>
-            </a>
-        </div>
-    <% }) %>
+  <h2>🔥 TOP NEWS</h2>
+
+  <% topNews.forEach(item => { %>
+    <div class="card">
+
+      <a href="/news/<%= item._id %>">
+        <%= item.title %>
+        <% if(item.isLive){ %>
+          <span class="live">LIVE</span>
+        <% } %>
+      </a>
+
+      <p class="meta">
+        🗓 <%= new Date(item.createdAt).toLocaleDateString("en-IN") %> |
+        ⏰ <%= new Date(item.createdAt).toLocaleTimeString("en-IN") %>
+      </p>
+
+    </div>
+  <% }) %>
+
 </div>
 <% } %>
+
+ 
 
 <!-- CATEGORY SECTIONS -->
 <% 
