@@ -33,14 +33,14 @@ body{
 
 /* DATE BAR */
 .top-bar{
-  display:flex;
-  justify-content:space-between;
   background:#111;
   color:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   padding:8px 15px;
   font-size:14px;
 }
-
 /* BREAKING */
 .breaking{
   display:flex;
@@ -189,7 +189,8 @@ body{
   <div class="breaking-label">BREAKING</div>
   <div class="breaking-text">
     <% breakingNews.forEach(item => { %>
-      <%= item.title %> 🔴 &nbsp;&nbsp;&nbsp;
+      <span><%= item.title %> 🔴 &nbsp;&nbsp;&nbsp;
+</span>
     <% }) %>
   </div>
 </div>
