@@ -26,13 +26,13 @@ app.set("view engine", "ejs");
 /* =======================
    NEWS SCHEMA
 ======================= */
-
 const newsSchema = new mongoose.Schema({
   title: String,
   content: String,
   category: String,
   image: String,
   location: String,
+  textColor: { type: String, default: "#000000" },  // 👈 ADD THIS
   isBreaking: { type: Boolean, default: false },
   isTop: { type: Boolean, default: false },
   isLive: { type: Boolean, default: false },
@@ -139,16 +139,16 @@ app.post("/admin/add", async (req, res) => {
   try {
 
     const newNews = new News({
-      title: req.body.title,
-      content: req.body.content,
-      category: req.body.category,
-      image: req.body.image,
-      location: req.body.location,
-      isBreaking: req.body.isBreaking === "on",
-      isTop: req.body.isTop === "on",
-      isLive: req.body.isLive === "on"
-    });
-
+  title: req.body.title,
+  content: req.body.content,
+  category: req.body.category,
+  image: req.body.image,
+  location: req.body.location,
+  textColor: req.body.textColor || "#000000",  // 👈 ADD THIS
+  isBreaking: req.body.isBreaking === "on",
+  isTop: req.body.isTop === "on",
+  isLive: req.body.isLive === "on"
+});
     await newNews.save();
     res.redirect("/admin");
 
