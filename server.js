@@ -119,7 +119,7 @@ app.get("/news/:id", async (req, res) => {
     news.views += 1;
     await news.save();
 
-    res.render("news-Details", { news });
+    res.render("news-Detail", { news });
 
   } catch (err) {
     res.send("Error loading news");
