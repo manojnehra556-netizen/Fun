@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Jila Update</title>
+<title>जिला अपडेट</title>
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-  margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:#f4f4f4;
 }
 
-/* Header */
+/* HEADER */
 .header{
   background:linear-gradient(90deg,#c40000,#ff0000);
   color:white;
   text-align:center;
   padding:20px;
 }
+.header h1{margin:0;}
+.header p{margin-top:5px;font-size:14px;}
 
-.header h1{ margin:0; }
-
-/* Date Bar */
+/* DATE BAR */
 .top-bar{
   background:#111;
   color:white;
@@ -32,90 +33,118 @@ body{
   font-size:14px;
 }
 
-/* Breaking Ticker */
+/* BREAKING TICKER */
 .breaking{
   background:black;
   color:white;
   display:flex;
   overflow:hidden;
 }
-
 .breaking-label{
   background:red;
   padding:8px 12px;
   font-weight:bold;
 }
-
 .breaking-text{
   white-space:nowrap;
   display:inline-block;
   padding-left:100%;
   animation: scroll 18s linear infinite;
 }
-
 @keyframes scroll{
   0%{ transform:translateX(0); }
   100%{ transform:translateX(-100%); }
 }
 
-/* Main Breaking */
+/* MAIN BREAKING */
 .main-breaking{
-  padding:20px;
-  text-align:center;
   background:white;
+  margin:15px;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+  text-align:center;
 }
-
 .main-breaking img{
   width:100%;
   max-height:250px;
   object-fit:cover;
-  border-radius:5px;
+  border-radius:6px;
 }
-
 .main-breaking h2{
-  font-size:22px;
   margin-top:15px;
+  font-size:22px;
 }
-
 .btn{
   display:inline-block;
   margin-top:15px;
-  background:red;
+  padding:8px 15px;
+  background:#c40000;
   color:white;
-  padding:10px 20px;
   text-decoration:none;
   border-radius:4px;
 }
 
-/* Menu */
-.menu{
+/* CATEGORY BAR */
+.category-bar{
   display:flex;
-  justify-content:center;
+  justify-content:space-around;
+  background:white;
+  margin:15px;
+  padding:12px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.category-bar a{
+  text-decoration:none;
+  font-size:18px;
+  font-weight:bold;
+  color:#c40000;
+  padding:8px 12px;
+  border-radius:6px;
+  transition:0.3s;
+}
+.category-bar a:hover{
+  background:#c40000;
+  color:white;
+}
+
+/* CATEGORY NEWS */
+.section{
+  margin:15px;
+}
+.section h3{
+  border-left:4px solid red;
+  padding-left:10px;
+  margin-bottom:10px;
+}
+.card{
   background:white;
   padding:10px;
+  margin-bottom:10px;
+  border-radius:6px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.08);
 }
-
-.menu a{
-  margin:0 10px;
+.card a{
   text-decoration:none;
-  color:#c40000;
   font-weight:bold;
+  color:black;
 }
 
-/* Responsive */
+/* MOBILE */
 @media(max-width:600px){
-  .main-breaking h2{
-    font-size:18px;
-  }
+  .main-breaking h2{font-size:18px;}
+  .category-bar{flex-wrap:wrap;gap:10px;}
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <h1>जिला अपडेट</h1>
-  <div>आपके जिले की हर खबर, सबसे पहले</div>
+  <p>आपके जिले की हर खबर, सबसे पहले</p>
 </div>
 
 <!-- DATE BAR -->
@@ -128,45 +157,85 @@ body{
 <div class="breaking">
   <div class="breaking-label">BREAKING</div>
   <div class="breaking-text">
-    <% breakingNews.forEach(item=>{ %>
-      <span><%= item.title %> &nbsp; | &nbsp;</span>
-    <% }) %>
+    <% if(breakingNews){ %>
+      <%= breakingNews.title %> | 
+    <% } %>
   </div>
 </div>
 
-<!-- MAIN BREAKING CARD -->
-<% if(breakingNews.length > 0){ %>
+<!-- MAIN BREAKING -->
+<% if(breakingNews){ %>
 <div class="main-breaking">
-  <% const item = breakingNews[0]; %>
 
-  <% if(item.image){ %>
-    <img src="<%= item.image %>">
+  <% if(breakingNews.image){ %>
+    <img src="<%= breakingNews.image %>">
   <% } %>
 
-  <h2><%= item.title %></h2>
+  <h2><%= breakingNews.title %></h2>
 
-  <a href="/news/<%= item._id %>" class="btn">
+  <a href="/news/<%= breakingNews._id %>" class="btn">
     Read Full News →
   </a>
+
 </div>
 <% } %>
 
-<!-- CATEGORY MENU -->
-<div class="menu">
-  <a href="/">Home</a>
+<!-- CATEGORY BAR -->
+<div class="category-bar">
   <a href="/category/Local">Local</a>
   <a href="/category/Sports">Sports</a>
   <a href="/category/Business">Business</a>
   <a href="/category/Politics">Politics</a>
 </div>
 
+<!-- LOCAL -->
+<div class="section">
+<h3>Local News</h3>
+<% localNews.forEach(item=>{ %>
+  <div class="card">
+    <a href="/news/<%= item._id %>"><%= item.title %></a>
+  </div>
+<% }) %>
+</div>
+
+<!-- SPORTS -->
+<div class="section">
+<h3>Sports News</h3>
+<% sportsNews.forEach(item=>{ %>
+  <div class="card">
+    <a href="/news/<%= item._id %>"><%= item.title %></a>
+  </div>
+<% }) %>
+</div>
+
+<!-- BUSINESS -->
+<div class="section">
+<h3>Business News</h3>
+<% businessNews.forEach(item=>{ %>
+  <div class="card">
+    <a href="/news/<%= item._id %>"><%= item.title %></a>
+  </div>
+<% }) %>
+</div>
+
+<!-- POLITICS -->
+<div class="section">
+<h3>Politics News</h3>
+<% politicsNews.forEach(item=>{ %>
+  <div class="card">
+    <a href="/news/<%= item._id %>"><%= item.title %></a>
+  </div>
+<% }) %>
+</div>
+
+<!-- CLOCK SCRIPT -->
 <script>
 function updateClock(){
-  const now = new Date();
-  document.getElementById("currentDate").innerHTML =
-    "📅 " + now.toLocaleDateString("en-IN");
-  document.getElementById("liveClock").innerHTML =
-    "⏰ " + now.toLocaleTimeString("en-IN");
+  const now=new Date();
+  document.getElementById("currentDate").innerHTML=
+  "📅 "+now.toLocaleDateString("en-IN");
+  document.getElementById("liveClock").innerHTML=
+  "⏰ "+now.toLocaleTimeString("en-IN");
 }
 setInterval(updateClock,1000);
 updateClock();
