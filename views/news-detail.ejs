@@ -1,63 +1,148 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><%= news.title %></title>
+    <title><%= news.title %> | Jila Update</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body{
-            font-family: Arial;
-            background:#f4f4f4;
             margin:0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:#f4f4f4;
+        }
+
+        header{
+            background:#c40000;
+            color:white;
+            text-align:center;
             padding:20px;
         }
+
+        header h1{
+            margin:0;
+            font-size:32px;
+        }
+
         .container{
-            background:#fff;
-            padding:20px;
-            border-radius:8px;
-            max-width:800px;
-            margin:auto;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
+            max-width:900px;
+            margin:30px auto;
+            background:white;
+            padding:25px;
+            border-radius:12px;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
         }
-        img{
+
+        .title{
+            font-size:28px;
+            font-weight:bold;
+            margin-bottom:10px;
+        }
+
+        .meta{
+            display:flex;
+            justify-content:space-between;
+            color:#777;
+            font-size:14px;
+            margin-bottom:15px;
+        }
+
+        .badge{
+            display:inline-block;
+            padding:5px 10px;
+            border-radius:20px;
+            font-size:12px;
+            font-weight:bold;
+            color:white;
+        }
+
+        .live{
+            background:#ff0000;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink{
+            0%{opacity:1;}
+            50%{opacity:0.4;}
+            100%{opacity:1;}
+        }
+
+        .image img{
             width:100%;
+            border-radius:10px;
+            margin-bottom:20px;
+        }
+
+        .content{
+            font-size:18px;
+            line-height:1.8;
+            color:#333;
+            white-space: pre-line;
+        }
+
+        .back{
+            margin-top:30px;
+        }
+
+        .back a{
+            text-decoration:none;
+            background:#c40000;
+            color:white;
+            padding:10px 18px;
             border-radius:6px;
         }
-        h1{
-            margin-top:0;
-        }
-        .meta{
-            color:gray;
+
+        .views{
+            margin-top:10px;
             font-size:14px;
+            color:#555;
         }
-        .back{
-            margin-top:20px;
-            display:inline-block;
-            text-decoration:none;
-            color:red;
+
+        @media(max-width:600px){
+            .title{
+                font-size:22px;
+            }
         }
     </style>
 </head>
 <body>
 
+<header>
+    <h1>जिला अपडेट</h1>
+</header>
+
 <div class="container">
 
-    <h1><%= news.title %></h1>
+    <div class="title">
+        <%= news.title %>
+
+        <% if(news.isLive){ %>
+            <span class="badge live">LIVE</span>
+        <% } %>
+    </div>
 
     <div class="meta">
-        Category: <%= news.category %> |
-        Views: <%= news.views || 0 %>
+        <div>Category: <%= news.category %></div>
+        <div><%= new Date(news.createdAt).toLocaleString() %></div>
     </div>
 
     <% if(news.image){ %>
-        <br>
-        <img src="<%= news.image %>">
+        <div class="image">
+            <img src="<%= news.image %>" alt="News Image">
+        </div>
     <% } %>
 
-    <p style="margin-top:20px;">
+    <div class="content">
         <%= news.description %>
-    </p>
+    </div>
 
-    <a href="/" class="back">← Back to Home</a>
+    <div class="views">
+        👁️ Views: <%= news.views %>
+    </div>
+
+    <div class="back">
+        <a href="/">⬅ Back to Home</a>
+    </div>
 
 </div>
 
