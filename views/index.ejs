@@ -1,176 +1,221 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Jila Update</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>जिला अपडेट</title>
-
-<!-- ✅ Google AdSense Script (Only Added This) -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7883082211137274"
-     crossorigin="anonymous"></script>
 
 <style>
 body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f4f4f4;
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
 }
 
-/* HEADER */
-header{
-  background:#c40000;
-  color:white;
-  text-align:center;
-  padding:20px;
+/* Header */
+.header{
+    background:linear-gradient(90deg,#c40000,#ff0000);
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+.header h1{
+    margin:0;
+}
+.tagline{
+    font-size:14px;
 }
 
-header h1{
-  margin:0;
-  font-size:32px;
+/* Breaking ticker */
+.breaking{
+    background:black;
+    color:white;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
 }
-
-/* BREAKING BAR */
-.breaking-bar{
-  background:black;
-  color:white;
-  padding:8px;
-  overflow:hidden;
-  white-space:nowrap;
-}
-
 .breaking-label{
-  background:red;
-  padding:4px 8px;
-  font-weight:bold;
+    background:red;
+    padding:8px 12px;
+    font-weight:bold;
+}
+.breaking-text{
+    white-space:nowrap;
+    display:inline-block;
+    padding-left:100%;
+    animation: scroll 15s linear infinite;
+}
+@keyframes scroll{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-100%); }
 }
 
-.breaking-scroll{
-  display:inline-block;
+/* Navbar */
+.nav{
+    display:flex;
+    justify-content:center;
+    background:white;
+    border-bottom:2px solid #ddd;
+}
+.nav a{
+    padding:10px 15px;
+    text-decoration:none;
+    color:#c40000;
+    font-weight:bold;
 }
 
-.breaking-scroll a{
-  color:white;
-  margin-right:40px;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-/* CATEGORY BAR */
-.category-bar{
-  background:#ffffff;
-  border-bottom:3px solid #c40000;
-  overflow-x:auto;
-  white-space:nowrap;
-  padding:12px 0;
-}
-
-.category-bar a{
-  display:inline-block;
-  margin:0 15px;
-  text-decoration:none;
-  font-weight:bold;
-  font-size:18px;
-  color:#c40000;
-}
-
-/* SECTION */
+/* Section */
 .section{
-  padding:15px;
+    max-width:900px;
+    margin:20px auto;
+    background:white;
+    padding:15px;
+    border-radius:8px;
+    box-shadow:0 5px 10px rgba(0,0,0,0.05);
 }
-
 .section h2{
-  color:#c40000;
-  border-bottom:2px solid #c40000;
-  padding-bottom:5px;
+    border-left:5px solid red;
+    padding-left:10px;
 }
 
+/* Card */
 .card{
-  background:white;
-  padding:12px;
-  margin:12px 0;
-  border-radius:6px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+.card:last-child{
+    border-bottom:none;
+}
+.card a{
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+}
+.card a:hover{
+    color:#c40000;
 }
 
-.card a{
-  text-decoration:none;
-  color:black;
+/* LIVE badge */
+.live{
+    background:red;
+    color:white;
+    font-size:11px;
+    padding:3px 8px;
+    border-radius:20px;
+    margin-left:8px;
+    animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(255,0,0,0.7); }
+    70%{ box-shadow:0 0 0 10px rgba(255,0,0,0); }
+    100%{ box-shadow:0 0 0 0 rgba(255,0,0,0); }
+}
+
+/* Read more */
+.readmore{
+    display:block;
+    text-align:right;
+    margin-top:10px;
+    font-size:14px;
+}
+.readmore a{
+    color:#c40000;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* Ad banner */
+.ad{
+    max-width:900px;
+    margin:20px auto;
+    text-align:center;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>जिला अपडेट</h1>
-  <p>आपके जिले की हर खबर, सबसे पहले</p>
-</header>
-
-<!-- BREAKING -->
-<div class="breaking-bar">
-  <span class="breaking-label">🔴 BREAKING</span>
-  <div class="breaking-scroll">
-    <% if (breakingNews && breakingNews.length > 0) { %>
-      <% breakingNews.forEach(item => { %>
-        <a href="/news/<%= item._id %>"><%= item.title %></a>
-      <% }) %>
-    <% } %>
-  </div>
+<!-- Header -->
+<div class="header">
+    <h1>जिला अपडेट</h1>
+    <div class="tagline">आपके जिले की हर खबर, सबसे पहले</div>
 </div>
 
-<!-- ✅ AD BANNER (Only Added Here) -->
-<div style="text-align:center; margin:15px 0;">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-7883082211137274"
-       data-ad-slot="YOUR_AD_SLOT_ID"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
+<!-- Breaking News -->
+<% if(breakingNews && breakingNews.length > 0){ %>
+<div class="breaking">
+    <div class="breaking-label">BREAKING</div>
+    <div class="breaking-text">
+        <% breakingNews.forEach(item => { %>
+            🔴 <%= item.title %> &nbsp;&nbsp;&nbsp;
+        <% }) %>
+    </div>
+</div>
+<% } %>
+
+<!-- Navbar -->
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/category/Local">Local</a>
+    <a href="/category/Sports">Sports</a>
+    <a href="/category/Business">Business</a>
+    <a href="/category/Politics">Politics</a>
 </div>
 
-<!-- CATEGORY SCROLL BAR -->
-<div class="category-bar">
-  <a href="/">Home</a>
-  <a href="/category/Local">Local</a>
-  <a href="/category/Sports">Sports</a>
-  <a href="/category/Business">Business</a>
-  <a href="/category/Politics">Politics</a>
-  <a href="/category/Entertainment">Entertainment</a>
-  <a href="/category/Technology">Technology</a>
+<!-- Google Ad Banner -->
+<div class="ad">
+    <!-- Google AdSense code yaha paste karo -->
 </div>
 
 <!-- TOP NEWS -->
+<% if(topNews && topNews.length > 0){ %>
 <div class="section">
-  <h2>🔥 TOP NEWS</h2>
-  <% if (topNews && topNews.length > 0) { %>
+    <h2>🔥 TOP NEWS</h2>
     <% topNews.forEach(item => { %>
-      <div class="card">
-        <a href="/news/<%= item._id %>">
-          <h3><%= item.title %></h3>
-        </a>
-      </div>
+        <div class="card">
+            <a href="/news/<%= item._id %>">
+                <%= item.title %>
+                <% if(item.isLive){ %>
+                    <span class="live">LIVE</span>
+                <% } %>
+            </a>
+        </div>
     <% }) %>
-  <% } %>
 </div>
+<% } %>
 
-<!-- LOCAL PREVIEW -->
-<div class="section">
-  <h2>🏘 Local News</h2>
-  <% if (localNews && localNews.length > 0) { %>
-<% localNews.forEach(item => { %>
-      <div class="card">
-        <a href="/news/<%= item._id %>">
-          <h3><%= item.title %></h3>
-        </a>
-      </div>
-    <% }) %>
-  <% } %>
+<!-- CATEGORY SECTIONS -->
+<% 
+const categories = [
+    { name: "Local", data: localNews },
+    { name: "Sports", data: sportsNews },
+    { name: "Business", data: businessNews },
+    { name: "Politics", data: politicsNews }
+];
+%>
 
-  <a href="/category/Local">Read More →</a>
-</div>
+<% categories.forEach(cat => { %>
+    <% if(cat.data && cat.data.length > 0){ %>
+        <div class="section">
+            <h2><%= cat.name %> News</h2>
+
+            <% cat.data.slice(0,2).forEach(item => { %>
+                <div class="card">
+                    <a href="/news/<%= item._id %>">
+                        <%= item.title %>
+                        <% if(item.isLive){ %>
+                            <span class="live">LIVE</span>
+                        <% } %>
+                    </a>
+                </div>
+            <% }) %>
+
+            <div class="readmore">
+                <a href="/category/<%= cat.name %>">Read More →</a>
+            </div>
+        </div>
+    <% } %>
+<% }) %>
 
 </body>
 </html>
