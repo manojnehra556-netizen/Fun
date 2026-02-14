@@ -1,128 +1,80 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>जिला अपडेट</title>
 
-<!-- Google AdSense Script -->
+<!-- AdSense Script -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7883082211137274"
      crossorigin="anonymous"></script>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f4f4f4;
-}
-
-header{
-  background:#c40000;
-  color:white;
-  text-align:center;
-  padding:20px;
-}
-
-.section{
-  padding:15px;
-}
-
-.card{
-  background:white;
-  padding:12px;
-  margin:12px 0;
-  border-radius:6px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-.card a{
-  text-decoration:none;
-  color:black;
-}
-
-.latest{
-  background:#fff3f3;
-  padding:15px;
-  margin:15px;
-  border-radius:6px;
-}
-
-.ad-box{
-  margin:20px 0;
-  text-align:center;
-}
+body { font-family: Arial; margin: 0; background:#f4f4f4; }
+header { background:red; color:white; padding:20px; text-align:center; }
+.section { padding:15px; }
+.card { background:white; padding:10px; margin-bottom:10px; }
+.latest { background:#fff3f3; padding:15px; margin:15px; }
+.ad-box { text-align:center; margin:20px 0; }
+a { text-decoration:none; color:black; }
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>जिला अपडेट</h1>
-  <p>आपके जिले की हर खबर, सबसे पहले</p>
+<h1>जिला अपडेट</h1>
+<p>आपके जिले की हर खबर, सबसे पहले</p>
 </header>
 
-<!-- TOP AD BANNER -->
+<!-- TOP AD -->
 <div class="ad-box">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-7883082211137274"
-       data-ad-slot="YOUR_AD_SLOT_ID"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7883082211137274"
+     data-ad-slot="YOUR_AD_SLOT_ID"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 </div>
 
-<!-- LATEST SECTION -->
-<% if (latest.length > 0) { %>
+<!-- LATEST -->
+<% if (latest && latest.length > 0) { %>
 <div class="latest">
-  <h2>🔥 Latest News</h2>
-  <h3>
-    <a href="/news/<%= latest[0]._id %>">
-      <%= latest[0].title %>
-    </a>
-  </h3>
+<h2>🔥 Latest News</h2>
+<h3>
+<a href="/news/<%= latest[0]._id %>">
+<%= latest[0].title %>
+</a>
+</h3>
 </div>
 <% } %>
 
-<!-- LOCAL SECTION -->
+<!-- LOCAL -->
 <div class="section">
-  <h2>Local</h2>
-  <% local.forEach(post => { %>
-    <div class="card">
-      <a href="/news/<%= post._id %>">
-        <%= post.title %>
-      </a>
-    </div>
-  <% }) %>
-  <a href="/category/Local">Read More</a>
+<h2>Local</h2>
+<% if(local){ local.forEach(post => { %>
+<div class="card">
+<a href="/news/<%= post._id %>">
+<%= post.title %>
+</a>
+</div>
+<% }) } %>
+<a href="/category/Local">Read More</a>
 </div>
 
-<!-- MID PAGE AD -->
-<div class="ad-box">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-7883082211137274"
-       data-ad-slot="YOUR_AD_SLOT_ID"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</div>
-
-<!-- SPORTS SECTION -->
+<!-- SPORTS -->
 <div class="section">
-  <h2>Sports</h2>
-  <% sports.forEach(post => { %>
-    <div class="card">
-      <a href="/news/<%= post._id %>">
-        <%= post.title %>
-      </a>
-    </div>
-  <% }) %>
-  <a href="/category/Sports">Read More</a>
+<h2>Sports</h2>
+<% if(sports){ sports.forEach(post => { %>
+<div class="card">
+<a href="/news/<%= post._id %>">
+<%= post.title %>
+</a>
+</div>
+<% }) } %>
+<a href="/category/Sports">Read More</a>
 </div>
 
 </body>
