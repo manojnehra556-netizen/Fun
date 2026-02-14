@@ -40,6 +40,9 @@ app.get("/", async (req,res)=>{
   const localNews = await News.find({category:"Local"}).sort({createdAt:-1}).limit(2);
   const sportsNews = await News.find({category:"Sports"}).sort({createdAt:-1}).limit(2);
   const businessNews = await News.find({category:"Business"}).sort({createdAt:-1}).limit(2);
+const politicsNews = await News.find({ category: "Politics" })
+  .sort({ createdAt: -1 })
+  .limit(2);
 
   res.render("index",{
     breakingNews,
