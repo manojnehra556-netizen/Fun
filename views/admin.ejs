@@ -1,185 +1,212 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Admin Panel - Jila Update</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Jila Update</title>
 
 <style>
+
 body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f4f4f4;
+margin:0;
+font-family:Arial, sans-serif;
+background:#f4f6f9;
 }
 
-/* HEADER */
+/* Header */
 .header{
-  background:#c40000;
-  color:white;
-  text-align:center;
-  padding:15px;
-  font-size:20px;
-  font-weight:bold;
+background:linear-gradient(90deg,#c40000,#ff0000);
+color:white;
+padding:18px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+letter-spacing:1px;
 }
 
-/* CONTAINER */
+/* Container */
 .container{
-  max-width:900px;
-  margin:20px auto;
-  background:white;
-  padding:20px;
-  border-radius:8px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+max-width:1000px;
+margin:auto;
+padding:20px;
 }
 
-/* FORM */
-form input,
-form textarea,
-form select{
-  width:100%;
-  padding:8px;
-  margin-bottom:10px;
-  border:1px solid #ccc;
-  border-radius:4px;
+/* Card */
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+margin-bottom:25px;
 }
 
-form textarea{
-  height:120px;
-  resize:none;
+/* Form */
+input, textarea, select{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+textarea{
+min-height:100px;
+resize:vertical;
 }
 
 .checkbox-group{
-  display:flex;
-  gap:15px;
-  margin-bottom:10px;
+margin-top:10px;
 }
 
+.checkbox-group label{
+margin-right:15px;
+font-size:14px;
+}
+
+/* Button */
 button{
-  background:#c40000;
-  color:white;
-  border:none;
-  padding:10px 15px;
-  border-radius:4px;
-  cursor:pointer;
+background:#c40000;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+margin-top:10px;
 }
 
 button:hover{
-  background:#900000;
+background:#a80000;
 }
 
-/* NEWS LIST */
-.news-list{
-  margin-top:30px;
+/* Table */
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+font-size:14px;
 }
 
-.news-card{
-  border-bottom:1px solid #ddd;
-  padding:10px 0;
+th{
+background:#c40000;
+color:white;
+padding:10px;
 }
 
-.news-card:last-child{
-  border:none;
+td{
+padding:10px;
+border-bottom:1px solid #eee;
 }
 
+tr:hover{
+background:#f9f9f9;
+}
+
+/* Delete Button */
 .delete-btn{
-  color:red;
-  text-decoration:none;
-  font-size:13px;
-  margin-left:10px;
+background:#ff4444;
+color:white;
+padding:6px 10px;
+border-radius:5px;
+text-decoration:none;
+font-size:13px;
 }
 
-.meta{
-  font-size:12px;
-  color:gray;
+.delete-btn:hover{
+background:#cc0000;
 }
 
-@media(max-width:600px){
-  .container{
-    margin:10px;
-  }
+/* Responsive */
+@media(max-width:768px){
+table, thead, tbody, th, td, tr{
+display:block;
 }
+
+th{
+display:none;
+}
+
+td{
+border:none;
+position:relative;
+padding-left:50%;
+margin-bottom:10px;
+}
+
+td:before{
+position:absolute;
+left:10px;
+top:10px;
+font-weight:bold;
+}
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  Admin Dashboard - Jila Update
+Admin Panel - Jila Update
 </div>
 
 <div class="container">
 
-  <h3>Add New News</h3>
+<!-- ADD NEWS -->
+<div class="card">
+<h3>Add News</h3>
 
-  <form action="/admin/add" method="POST">
+<form action="/admin/add" method="POST">
 
-    <label>Title:</label>
-    <input type="text" name="title" required>
+<input type="text" name="title" placeholder="News Title" required>
 
-    <label>Content:</label>
-    <textarea name="content" required></textarea>
+<textarea name="content" placeholder="News Content" required></textarea>
 
-    <label>Category:</label>
-    <select name="category" required>
-      <option value="Local">Local</option>
-      <option value="Sports">Sports</option>
-      <option value="Business">Business</option>
-      <option value="Politics">Politics</option>
-    </select>
+<input type="text" name="category" placeholder="Category (Local, Sports, Business, Politics)" required>
 
-    <label>Location:</label>
-    <input type="text" name="location">
+<input type="text" name="location" placeholder="Location">
 
-    <label>Image URL:</label>
-    <input type="text" name="image">
+<input type="text" name="image" placeholder="Image URL">
 
-    <label>Text Color:</label>
-    <input type="color" name="textColor" value="#000000">
+<div class="checkbox-group">
+<label>
+<input type="checkbox" name="isBreaking"> Breaking News
+</label>
+</div>
 
-    <div class="checkbox-group">
-      <label><input type="checkbox" name="isBreaking"> Breaking</label>
-      <label><input type="checkbox" name="isTop"> Top News</label>
-      <label><input type="checkbox" name="isLive"> Live</label>
-    </div>
+<button type="submit">Publish News</button>
 
-    <button type="submit">Publish News</button>
+</form>
+</div>
 
-  </form>
+<!-- ALL NEWS LIST -->
+<div class="card">
+<h3>All Posts</h3>
 
-  <div class="news-list">
-    <h3>All News</h3>
+<table>
+<tr>
+<th>Title</th>
+<th>Category</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
 
-    <% if(allNews && allNews.length > 0){ %>
+<% allNews.forEach(item => { %>
+<tr>
+<td><%= item.title.substring(0,40) %>...</td>
+<td><%= item.category %></td>
+<td><%= new Date(item.createdAt).toLocaleDateString("en-IN") %></td>
+<td>
+<a class="delete-btn" href="/admin/delete/<%= item._id %>">
+Delete
+</a>
+</td>
+</tr>
+<% }) %>
 
-      <% allNews.forEach(news => { %>
+</table>
 
-        <div class="news-card">
-
-          <strong style="color:<%= news.textColor %>">
-            <%= news.title %>
-          </strong>
-
-          <div class="meta">
-            Category: <%= news.category %> |
-            Views: <%= news.views %> |
-            Date: <%= new Date(news.createdAt).toLocaleString("en-IN") %>
-          </div>
-
-          <a class="delete-btn" href="/admin/delete/<%= news._id %>">
-            Delete
-          </a>
-
-        </div>
-
-      <% }) %>
-
-    <% } else { %>
-
-      <p>No news added yet.</p>
-
-    <% } %>
-
-  </div>
+</div>
 
 </div>
 
