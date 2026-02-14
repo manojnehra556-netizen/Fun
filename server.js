@@ -49,6 +49,7 @@ const News = mongoose.model("News", newsSchema);
 
 app.get("/", async (req, res) => {
   try {
+
     const breakingNews = await News.find({ isBreaking: true })
       .sort({ createdAt: -1 })
       .limit(5);
@@ -74,20 +75,19 @@ app.get("/", async (req, res) => {
       .limit(2);
 
     res.render("index", {
-      breakingNews,
-      liveNews,
-      topNews,
-      localNews,
-      sportsNews,
-      businessNews
+      breakingNews: breakingNews || [],
+      liveNews: liveNews || [],
+      topNews: topNews || [],
+      localNews: localNews || [],
+      sportsNews: sportsNews || [],
+      businessNews: businessNews || []
     });
 
   } catch (err) {
-    console.log(err);
-    res.send("Internal Server Error");
+    console.log("Homepage Error:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
-
 /* =======================
    CATEGORY PAGE
 ======================= */
