@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>जिला अपडेट</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   font-family:Arial, sans-serif;
@@ -24,50 +20,53 @@ body{
   text-align:center;
   padding:18px;
 }
-.header h1{
-  font-size:26px;
-}
-.tagline{
-  font-size:13px;
-}
+.header h1{font-size:26px;}
+.tagline{font-size:13px;}
 
-/* DATE BAR */
+/* DATE + TIME (SAME LINE CENTER) */
 .top-bar{
   background:#111;
   color:white;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:8px 15px;
+  text-align:center;
+  padding:8px 10px;
   font-size:14px;
+  font-weight:500;
 }
-/* BREAKING */
+
+/* BREAKING (SAME LINE SCROLL) */
 .breaking{
   display:flex;
+  align-items:center;
   background:black;
   color:white;
   overflow:hidden;
+  padding:6px 10px;
 }
+
 .breaking-label{
   background:red;
-  padding:8px 12px;
+  padding:6px 10px;
   font-weight:bold;
+  margin-right:10px;
+  white-space:nowrap;
 }
+
 .breaking-text{
   white-space:nowrap;
-  padding-left:100%;
-  animation:scroll 18s linear infinite;
+  display:inline-block;
+  animation:scroll 20s linear infinite;
 }
+
 @keyframes scroll{
-  0%{ transform:translateX(0); }
-  100%{ transform:translateX(-100%); }
+  0%{ transform: translateX(100%); }
+  100%{ transform: translateX(-100%); }
 }
 
 /* NAV */
 .nav{
   display:flex;
   justify-content:center;
-  gap:25px;
+  gap:20px;
   padding:12px;
   background:white;
   border-bottom:1px solid #ddd;
@@ -95,13 +94,8 @@ body{
   background:white;
   padding:15px;
   margin:12px 0;
-  border-radius:10px;
+  border-radius:8px;
   box-shadow:0 3px 8px rgba(0,0,0,0.08);
-  transition:0.2s;
-}
-
-.card:active{
-  transform:scale(0.98);
 }
 
 .card a{
@@ -134,37 +128,12 @@ body{
   100%{opacity:1;}
 }
 
-/* READ MORE */
-.read-more{
-  display:block;
-  margin-top:8px;
-  font-size:13px;
-  color:#c40000;
-}
-
 /* MOBILE */
 @media(max-width:768px){
-
-  .header h1{
-    font-size:22px;
-  }
-
-  .top-bar{
-    flex-direction:column;
-    text-align:center;
-    gap:4px;
-  }
-
   .nav{
     flex-wrap:wrap;
     gap:10px;
-    font-size:13px;
   }
-
-  .breaking{
-    flex-direction:column;
-  }
-
 }
 </style>
 </head>
@@ -177,20 +146,19 @@ body{
   <div class="tagline">आपके जिले की हर खबर, सबसे पहले</div>
 </div>
 
-<!-- DATE + LIVE TIME -->
+<!-- DATE + TIME SAME LINE -->
 <div class="top-bar">
-  <div id="currentDate"></div>
-  <div id="liveClock"></div>
+  <span id="currentDate"></span> |
+  <span id="liveClock"></span>
 </div>
 
-<!-- BREAKING NEWS -->
+<!-- BREAKING -->
 <% if(breakingNews && breakingNews.length > 0){ %>
 <div class="breaking">
-  <div class="breaking-label">BREAKING</div>
+  <span class="breaking-label">BREAKING:</span>
   <div class="breaking-text">
     <% breakingNews.forEach(item => { %>
-      <span><%= item.title %> 🔴 &nbsp;&nbsp;&nbsp;
-</span>
+      <span><%= item.title %> 🔴 &nbsp;&nbsp;&nbsp;</span>
     <% }) %>
   </div>
 </div>
@@ -212,11 +180,8 @@ body{
 
 <% topNews.forEach(item => { %>
 <div class="card">
-
 <a href="/news/<%= item._id %>">
-<span style="color:<%= item.textColor || '#000' %>">
 <%= item.title %>
-</span>
 <% if(item.isLive){ %>
 <span class="live">LIVE</span>
 <% } %>
@@ -234,59 +199,14 @@ body{
 </div>
 <% } %>
 
-<!-- CATEGORY SECTIONS -->
-<%
-const categories = [
-{ name:"Local", data: localNews },
-{ name:"Sports", data: sportsNews },
-{ name:"Business", data: businessNews },
-{ name:"Politics", data: politicsNews }
-];
-%>
-
-<% categories.forEach(cat => { %>
-<% if(cat.data && cat.data.length > 0){ %>
-
-<div class="section">
-<h2><%= cat.name %> News</h2>
-
-<% cat.data.forEach(item => { %>
-<div class="card">
-
-<a href="/news/<%= item._id %>">
-<span style="color:<%= item.textColor || '#000' %>">
-<%= item.title %>
-</span>
-<% if(item.isLive){ %>
-<span class="live">LIVE</span>
-<% } %>
-</a>
-
-<div class="meta">
-📅 <%= new Date(item.createdAt).toLocaleDateString("en-IN") %> |
-⏰ <%= new Date(item.createdAt).toLocaleTimeString("en-IN") %>
-</div>
-
-</div>
-<% }) %>
-
-<a class="read-more" href="/category/<%= cat.name %>">
-Read More →
-</a>
-
-</div>
-
-<% } %>
-<% }) %>
-
 <!-- CLOCK SCRIPT -->
 <script>
 function updateClock(){
   const now = new Date();
-  document.getElementById("currentDate").innerHTML =
+  document.getElementById("currentDate").innerText =
   "📅 " + now.toLocaleDateString("en-IN");
 
-  document.getElementById("liveClock").innerHTML =
+  document.getElementById("liveClock").innerText =
   "⏰ " + now.toLocaleTimeString("en-IN");
 }
 setInterval(updateClock,1000);
