@@ -25,10 +25,20 @@ body{
 .top-bar{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   background:#111;
   color:#fff;
   padding:8px 15px;
   font-size:14px;
+}
+
+/* MOBILE VERSION */
+@media(max-width:600px){
+  .top-bar{
+    flex-direction:column;
+    text-align:center;
+    gap:4px;
+  }
 }
 
 /* BREAKING */
