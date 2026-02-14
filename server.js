@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const path = require("path");
 
 const app = express();
 
@@ -50,37 +49,23 @@ const News = mongoose.model("News", newsSchema);
 app.get("/", async (req, res) => {
   try {
 
-    const breakingNews = await News.find({ isBreaking: true })
-      .sort({ createdAt: -1 })
-      .limit(5);
+    const breakingNews = await News.find({ isBreaking: true }).sort({ createdAt: -1 }).limit(5);
+    const liveNews = await News.find({ isLive: true }).sort({ createdAt: -1 }).limit(3);
+    const topNews = await News.find({ isTop: true }).sort({ createdAt: -1 }).limit(5);
 
-    const liveNews = await News.find({ isLive: true })
-      .sort({ createdAt: -1 })
-      .limit(3);
-
-    const topNews = await News.find({ isTop: true })
-      .sort({ createdAt: -1 })
-      .limit(5);
-
-    const localNews = await News.find({ category: "Local" })
-      .sort({ createdAt: -1 })
-      .limit(2);
-
-    const sportsNews = await News.find({ category: "Sports" })
-      .sort({ createdAt: -1 })
-      .limit(2);
-
-    const businessNews = await News.find({ category: "Business" })
-      .sort({ createdAt: -1 })
-      .limit(2);
+    const localNews = await News.find({ category: "Local" }).sort({ createdAt: -1 }).limit(2);
+    const sportsNews = await News.find({ category: "Sports" }).sort({ createdAt: -1 }).limit(2);
+    const businessNews = await News.find({ category: "Business" }).sort({ createdAt: -1 }).limit(2);
+    const politicsNews = await News.find({ category: "Politics" }).sort({ createdAt: -1 }).limit(2);
 
     res.render("index", {
-      breakingNews: breakingNews || [],
-      liveNews: liveNews || [],
-      topNews: topNews || [],
-      localNews: localNews || [],
-      sportsNews: sportsNews || [],
-      businessNews: businessNews || []
+      breakingNews,
+      liveNews,
+      topNews,
+      localNews,
+      sportsNews,
+      businessNews,
+      politicsNews
     });
 
   } catch (err) {
@@ -88,21 +73,24 @@ app.get("/", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 /* =======================
    CATEGORY PAGE
 ======================= */
 
 app.get("/category/:name", async (req, res) => {
   try {
-    const news = await News.find({ category: req.params.name })
+    const categoryNews = await News.find({ category: req.params.name })
       .sort({ createdAt: -1 });
 
     res.render("category", {
       category: req.params.name,
-      news
+      categoryNews
     });
+
   } catch (err) {
-    res.send("Error loading category");
+    console.log("Category Error:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -112,9 +100,12 @@ app.get("/category/:name", async (req, res) => {
 
 app.get("/news/:id", async (req, res) => {
   try {
+
     const news = await News.findById(req.params.id);
 
-    if (!news) return res.send("News not found");
+    if (!news) {
+      return res.status(404).send("News not found");
+    }
 
     news.views += 1;
     await news.save();
@@ -122,7 +113,8 @@ app.get("/news/:id", async (req, res) => {
     res.render("news-detail", { news });
 
   } catch (err) {
-    res.send("Error loading news");
+    console.log("News Detail Error:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -131,8 +123,12 @@ app.get("/news/:id", async (req, res) => {
 ======================= */
 
 app.get("/admin", async (req, res) => {
-  const allNews = await News.find().sort({ createdAt: -1 });
-  res.render("admin", { allNews });
+  try {
+    const allNews = await News.find().sort({ createdAt: -1 });
+    res.render("admin", { allNews });
+  } catch (err) {
+    res.send("Admin error");
+  }
 });
 
 /* =======================
@@ -140,19 +136,26 @@ app.get("/admin", async (req, res) => {
 ======================= */
 
 app.post("/admin/add", async (req, res) => {
-  const newNews = new News({
-    title: req.body.title,
-    content: req.body.content,
-    category: req.body.category,
-    image: req.body.image,
-    location: req.body.location,
-    isBreaking: req.body.isBreaking === "on",
-    isTop: req.body.isTop === "on",
-    isLive: req.body.isLive === "on"
-  });
+  try {
 
-  await newNews.save();
-  res.redirect("/admin");
+    const newNews = new News({
+      title: req.body.title,
+      content: req.body.content,
+      category: req.body.category,
+      image: req.body.image,
+      location: req.body.location,
+      isBreaking: req.body.isBreaking === "on",
+      isTop: req.body.isTop === "on",
+      isLive: req.body.isLive === "on"
+    });
+
+    await newNews.save();
+    res.redirect("/admin");
+
+  } catch (err) {
+    console.log("Add News Error:", err);
+    res.send("Error adding news");
+  }
 });
 
 /* =======================
@@ -160,8 +163,12 @@ app.post("/admin/add", async (req, res) => {
 ======================= */
 
 app.get("/admin/delete/:id", async (req, res) => {
-  await News.findByIdAndDelete(req.params.id);
-  res.redirect("/admin");
+  try {
+    await News.findByIdAndDelete(req.params.id);
+    res.redirect("/admin");
+  } catch (err) {
+    res.send("Delete error");
+  }
 });
 
 /* =======================
