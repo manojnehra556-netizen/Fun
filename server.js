@@ -34,24 +34,49 @@ const News = mongoose.model("News", newsSchema);
 
 /* ================= HOME ================= */
 
-app.get("/", async (req,res)=>{
-  const breakingNews = await News.find({isBreaking:true}).sort({createdAt:-1});
-  const topNews = await News.find({isTop:true}).sort({createdAt:-1});
-  const localNews = await News.find({category:"Local"}).sort({createdAt:-1}).limit(2);
-  const sportsNews = await News.find({category:"Sports"}).sort({createdAt:-1}).limit(2);
-  const businessNews = await News.find({category:"Business"}).sort({createdAt:-1}).limit(2);
-const politicsNews = await News.find({ category: "Politics" })
-  .sort({ createdAt: -1 })
-  .limit(2);
+/* ================= HOME ROUTE ================= */
 
-  res.render("index",{
-    breakingNews,
-    topNews,
-    localNews,
-    sportsNews,
-    businessNews
-    politicsNews
-  });
+app.get("/", async (req, res) => {
+  try {
+
+    const breakingNews = await News.find({ isBreaking: true })
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    const topNews = await News.find({ isTop: true })
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    const localNews = await News.find({
+      category: { $regex: /^local$/i }
+    }).sort({ createdAt: -1 }).limit(2);
+
+    const sportsNews = await News.find({
+      category: { $regex: /^sports$/i }
+    }).sort({ createdAt: -1 }).limit(2);
+
+    const businessNews = await News.find({
+      category: { $regex: /^business$/i }
+    }).sort({ createdAt: -1 }).limit(2);
+
+    // 🔥 IMPROVED POLITICS SECTION (Case Insensitive + Safe)
+    const politicsNews = await News.find({
+      category: { $regex: /^politics$/i }
+    }).sort({ createdAt: -1 }).limit(2);
+
+    res.render("index", {
+      breakingNews: breakingNews || [],
+      topNews: topNews || [],
+      localNews: localNews || [],
+      sportsNews: sportsNews || [],
+      businessNews: businessNews || [],
+      politicsNews: politicsNews || []
+    });
+
+  } catch (err) {
+    console.log("Homepage Error:", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 /* ================= CATEGORY ================= */
