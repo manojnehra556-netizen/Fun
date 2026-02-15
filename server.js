@@ -27,7 +27,6 @@ const newsSchema = new mongoose.Schema({
   image: String,
   location: String,
   isBreaking: { type: Boolean, default: false },
-  isLive: { type: Boolean, default: false },
   views: { type: Number, default: 0 }
 }, { timestamps: true });
 
@@ -51,7 +50,6 @@ app.get("/", async (req, res) => {
     });
 
   } catch (err) {
-    console.log(err);
     res.send("Server Error");
   }
 });
@@ -68,14 +66,13 @@ app.get("/category/:name", async (req, res) => {
   });
 });
 
-/* ================= SINGLE NEWS ================= */
+/* ================= NEWS DETAIL ================= */
 
 app.get("/news/:id", async (req, res) => {
-
   const news = await News.findById(req.params.id);
-  if (!news) return res.send("News not found");
+  if (!news) return res.send("Not Found");
 
-  news.views += 1;
+  news.views++;
   await news.save();
 
   res.render("news-detail", { news });
@@ -89,18 +86,14 @@ app.get("/admin", async (req, res) => {
 });
 
 app.post("/admin/add", async (req, res) => {
-
-  const newNews = new News({
+  await News.create({
     title: req.body.title,
     content: req.body.content,
     category: req.body.category,
     image: req.body.image,
     location: req.body.location,
-    isBreaking: req.body.isBreaking === "on",
-    isLive: req.body.isLive === "on"
+    isBreaking: req.body.isBreaking === "on"
   });
-
-  await newNews.save();
   res.redirect("/admin");
 });
 
@@ -111,7 +104,6 @@ app.post("/admin/delete/:id", async (req, res) => {
 
 /* ================= PORT ================= */
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log("🚀 Server running on port " + PORT);
+app.listen(process.env.PORT || 3000, () => {
+  console.log("🚀 Server Running");
 });
