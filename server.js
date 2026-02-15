@@ -67,13 +67,24 @@ app.get("/category/:name", async (req, res) => {
 /* ================= NEWS DETAIL ================= */
 
 app.get("/news/:id", async (req, res) => {
-  const news = await News.findById(req.params.id);
-  if (!news) return res.send("Not Found");
+  try {
+    const news = await News.findById(req.params.id);
+    if (!news) return res.send("Not Found");
 
-  news.views++;
-  await news.save();
+    news.views++;
+    await news.save();
 
-  res.render("news-detail", { news });
+    const fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+
+    res.render("news-detail", { 
+      news,
+      fullUrl
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.send("Error loading news");
+  }
 });
 
 /* ================= ADMIN ================= */
