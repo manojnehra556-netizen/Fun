@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
+<title><%= news.title %> | जिला अपडेट</title>
 
 <style>
 body{
@@ -19,181 +19,100 @@ body{
   padding:18px;
 }
 
-/* CONTAINER */
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
-}
-
-/* FORM */
-.form-box{
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.08);
-  margin-bottom:30px;
-}
-
-.form-box input,
-.form-box textarea,
-.form-box select{
-  width:100%;
-  padding:10px;
-  margin-bottom:12px;
-  border-radius:6px;
-  border:1px solid #ccc;
+.top-bar{
+  background:#111;
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  padding:8px 15px;
   font-size:14px;
 }
 
-.form-box button{
-  padding:10px 16px;
-  background:red;
-  color:white;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* NEWS LIST */
-.news-list{
+/* CONTAINER */
+.container{
   background:white;
-  padding:20px;
+  margin:15px;
+  padding:18px;
   border-radius:10px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.08);
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-.news-item{
-  border-bottom:1px solid #eee;
-  padding:12px 0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+/* TITLE */
+.container h1{
+  margin-top:0;
+  font-size:22px;
 }
 
-.news-item:last-child{
-  border-bottom:none;
-}
-
-.news-info{
-  max-width:75%;
-}
-
-.news-title{
-  font-weight:bold;
-  margin-bottom:5px;
-}
-
+/* META INFO */
 .meta{
-  font-size:13px;
-  color:#666;
+  font-size:14px;
+  color:#777;
+  margin-bottom:12px;
 }
 
-.delete-btn{
-  background:#c40000;
-  color:white;
-  border:none;
-  padding:6px 12px;
-  border-radius:5px;
-  cursor:pointer;
+/* IMAGE */
+.container img{
+  width:100%;
+  border-radius:8px;
+  margin:12px 0;
 }
 
-.breaking-badge{
+/* CONTENT */
+.content{
+  font-size:16px;
+  line-height:1.6;
+  color:#333;
+}
+
+/* BACK BUTTON */
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:8px 14px;
   background:red;
   color:white;
-  padding:2px 6px;
-  font-size:11px;
-  border-radius:4px;
-  margin-left:5px;
+  border-radius:6px;
+  text-decoration:none;
 }
-
-/* MOBILE */
-@media(max-width:600px){
-  .news-item{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-  .delete-btn{
-    margin-top:8px;
-  }
+.btn:hover{
+  background:#b30000;
 }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h2>Admin Panel - जिला अपडेट</h2>
+  <h2>जिला अपडेट</h2>
+  आपके जिले की हर खबर, सबसे पहले
+</div>
+
+<div class="top-bar">
+  <div>
+    📍 <%= news.location || "India" %>
+  </div>
+  <div>
+    🕒 <%= new Date(news.createdAt).toLocaleString("en-IN") %>
+  </div>
 </div>
 
 <div class="container">
 
-  <!-- ADD NEWS FORM -->
-  <div class="form-box">
-    <h3>Add New News</h3>
+  <h1><%= news.title %></h1>
 
-    <form method="POST" action="/admin/add">
-      <input name="title" placeholder="News Title" required>
-
-      <textarea name="content" placeholder="Full News Content" rows="5" required></textarea>
-
-      <select name="category" required>
-        <option value="">Select Category</option>
-        <option>Local</option>
-        <option>Sports</option>
-        <option>Business</option>
-        <option>Politics</option>
-      </select>
-
-      <input name="image" placeholder="Image URL">
-
-      <input name="location" placeholder="Location">
-
-      <label>
-        <input type="checkbox" name="isBreaking">
-        Mark as Breaking News
-      </label>
-      <br><br>
-
-      <button type="submit">Publish News</button>
-    </form>
+  <div class="meta">
+    Category: <b><%= news.category %></b> |
+    Views: <b><%= news.views %></b>
   </div>
 
-  <!-- NEWS LIST -->
-  <div class="news-list">
-    <h3>All News</h3>
+  <% if(news.image){ %>
+    <img src="<%= news.image %>">
+  <% } %>
 
-    <% if(news-detail.length === 0){ %>
-      <p>No news available.</p>
-    <% } %>
-
-    <% allNews.forEach(item => { %>
-      <div class="news-item">
-
-        <div class="news-info">
-          <div class="news-title">
-            <%= item.title %>
-
-            <% if(item.isBreaking){ %>
-              <span class="breaking-badge">BREAKING</span>
-            <% } %>
-          </div>
-
-          <div class="meta">
-            📂 <%= item.category %> |
-            📍 <%= item.location || "Location" %> |
-            👁 <%= item.views %> views |
-            🗓 <%= item.createdAt.toLocaleDateString("en-IN") %>
-          </div>
-        </div>
-
-        <form method="POST" action="/admin/delete/<%= item._id %>">
-          <button class="delete-btn">Delete</button>
-        </form>
-
-      </div>
-    <% }) %>
-
+  <div class="content">
+    <%= news.content %>
   </div>
+
+  <a href="/" class="btn">⬅ Back to Home</a>
 
 </div>
 
