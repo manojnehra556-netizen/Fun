@@ -4,118 +4,101 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><%= news.title %> | जिला अपडेट</title>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 body{
   margin:0;
-  font-family: 'Segoe UI', Arial;
+  font-family:Arial, sans-serif;
   background:#f4f4f4;
 }
 
-/* HEADER */
 .header{
   background:linear-gradient(90deg,#c40000,#ff0000);
   color:white;
-  padding:18px;
   text-align:center;
-}
-
-/* CONTAINER */
-.container{
-  max-width:900px;
-  margin:20px auto;
   padding:15px;
 }
 
-/* CARD */
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:15px;
+}
+
 .card{
   background:white;
   padding:20px;
   border-radius:10px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.08);
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* BREAKING BADGE */
 .badge{
-  display:inline-block;
   background:red;
   color:white;
-  padding:4px 10px;
-  font-size:12px;
+  display:inline-block;
+  padding:6px 12px;
   border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
   margin-bottom:10px;
-  animation:blink 1s infinite;
-}
-@keyframes blink{
-  50%{opacity:0.6;}
 }
 
-/* TITLE */
 .title{
-  font-size:26px;
+  font-size:22px;
+  font-weight:bold;
   margin:10px 0;
   line-height:1.4;
 }
 
-/* META */
 .meta{
   font-size:14px;
   color:#777;
   margin-bottom:15px;
-  border-bottom:1px solid #eee;
-  padding-bottom:10px;
 }
 
-/* IMAGE */
 .hero-img{
   width:100%;
   border-radius:8px;
-  margin:15px 0;
+  margin-bottom:15px;
 }
 
-/* CONTENT */
 .content{
-  font-size:18px;
-  line-height:1.8;
+  font-size:16px;
+  line-height:1.7;
   color:#333;
+  margin-bottom:20px;
 }
 
-/* VIEW COUNTER */
 .views{
-  margin-top:15px;
   font-size:14px;
-  color:#555;
+  margin-bottom:15px;
 }
 
-/* SHARE */
-.share{
-  margin-top:15px;
-}
-.share a{
-  text-decoration:none;
-  padding:8px 14px;
-  border-radius:6px;
-  margin-right:8px;
+.whatsapp{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#25D366;
   color:white;
-  font-size:14px;
+  padding:10px 16px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
 }
-.whatsapp{background:#25D366;}
-.facebook{background:#1877F2;}
 
-/* BACK */
+.whatsapp i{
+  font-size:18px;
+}
+
 .back{
   display:inline-block;
-  margin-top:20px;
+  margin-top:15px;
   background:red;
   color:white;
   padding:8px 14px;
-  text-decoration:none;
   border-radius:6px;
-}
-
-/* MOBILE */
-@media(max-width:600px){
-  .title{font-size:20px;}
-  .content{font-size:16px;}
+  text-decoration:none;
 }
 </style>
 </head>
@@ -123,7 +106,6 @@ body{
 
 <div class="header">
   <h2>जिला अपडेट</h2>
-  आपके जिले की हर खबर, सबसे पहले
 </div>
 
 <div class="container">
@@ -139,7 +121,7 @@ body{
 
 <div class="meta">
   📍 <%= news.location || "India" %> |
-  🗓 <%= new Date(news.createdAt).toLocaleDateString("en-IN") %> |
+  📅 <%= new Date(news.createdAt).toLocaleDateString("en-IN") %> |
   ⏰ <%= new Date(news.createdAt).toLocaleTimeString("en-IN") %>
 </div>
 
@@ -148,22 +130,24 @@ body{
 <% } %>
 
 <div class="content">
-  <%- news.content %>
+  <%= news.content %>
 </div>
 
 <div class="views">
   👁 Total Views: <%= news.views %>
 </div>
 
-<div class="share">
-  <a class="whatsapp"
-     target="_blank"
-     href="https://wa.me/?text=<%= encodeURIComponent(news.title) %>"
-     Share on WhatsApp
-  </a>
-</div>
+<!-- WhatsApp Share -->
+<a class="whatsapp"
+   target="_blank"
+   href="https://wa.me/?text=<%= encodeURIComponent(news.title) %>">
+   <i class="fa-brands fa-whatsapp"></i>
+   Share on WhatsApp
+</a>
 
-<a href="/" class="back">⬅ Back to Home</a>
+<br>
+
+<a href="/" class="back">← Back to Home</a>
 
 </div>
 </div>
