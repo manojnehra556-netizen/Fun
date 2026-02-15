@@ -1,163 +1,152 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>जिला अपडेट</title>
+<title>Jila Update</title>
 
 <style>
 body{
   margin:0;
-  font-family: Arial, sans-serif;
-  background:#f4f4f4;
+  font-family:Arial;
+  background:#f5f5f5;
 }
 
-/* Header */
+/* HEADER */
 .header{
   background:linear-gradient(90deg,#c40000,#ff0000);
   color:white;
   text-align:center;
-  padding:15px;
-}
-.header h1{
-  margin:0;
-}
-.tagline{
-  font-size:14px;
+  padding:18px;
 }
 
-/* Top Date Bar */
+/* DATE BAR */
 .top-bar{
   background:#111;
-  color:#fff;
+  color:white;
   display:flex;
   justify-content:space-between;
-  padding:8px 15px;
+  padding:8px 12px;
   font-size:14px;
 }
 
-/* Breaking Big */
-.main-breaking{
-  background:#fff;
-  margin:15px;
-  padding:15px;
-  border-radius:8px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-.main-breaking h2{
-  font-size:20px;
-  margin:10px 0;
-}
-
-.breaking-img{
-  width:100%;
-  border-radius:6px;
-}
-
-.read-btn{
-  display:inline-block;
-  background:#e60000;
-  color:white;
-  padding:8px 15px;
-  text-decoration:none;
-  border-radius:5px;
-  margin-top:10px;
-}
-
-/* Breaking Ticker */
-.breaking-bar{
+/* PREMIUM CATEGORY */
+.category-bar{
+  background:white;
   display:flex;
-  align-items:center;
+  overflow-x:auto;
+  gap:10px;
+  padding:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.category-bar a{
+  text-decoration:none;
+  padding:8px 16px;
+  background:#f1f1f1;
+  border-radius:50px;
+  color:#333;
+  font-weight:bold;
+  transition:0.3s;
+}
+.category-bar a:hover{
+  background:red;
+  color:white;
+}
+
+/* BREAKING TICKER */
+.breaking{
   background:black;
   color:white;
+  display:flex;
+  align-items:center;
   overflow:hidden;
 }
-
 .breaking-label{
   background:red;
   padding:8px 12px;
   font-weight:bold;
 }
-
 .breaking-text{
   white-space:nowrap;
   display:inline-block;
   padding-left:100%;
   animation:scroll 15s linear infinite;
 }
-
 @keyframes scroll{
-  0%{ transform:translateX(0); }
-  100%{ transform:translateX(-100%); }
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-100%);}
 }
 
-/* Mobile */
-@media(max-width:600px){
-  .main-breaking h2{
-    font-size:18px;
-  }
+/* HERO */
+.hero{
+  background:white;
+  margin:15px;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
+.hero img{
+  width:100%;
+  border-radius:6px;
+}
+.hero h2{
+  margin:10px 0;
+}
+.btn{
+  display:inline-block;
+  background:red;
+  color:white;
+  padding:8px 14px;
+  border-radius:6px;
+  text-decoration:none;
+}
+
 </style>
 </head>
-
 <body>
 
-<!-- Header -->
 <div class="header">
-  <h1>जिला अपडेट</h1>
-  <div class="tagline">आपके जिले की हर खबर, सबसे पहले</div>
+  <h2>जिला अपडेट</h2>
+  आपके जिले की हर खबर, सबसे पहले
 </div>
 
-<!-- Date + Live Time -->
 <div class="top-bar">
   <div id="currentDate"></div>
   <div id="liveClock"></div>
 </div>
 
-<!-- BIG BREAKING NEWS -->
-<% if (breakingNews) { %>
-<div class="main-breaking">
-
-  <% if (breakingNews.image) { %>
-    <img src="<%= breakingNews.image %>" class="breaking-img">
-  <% } %>
-
-  <h2><%= breakingNews.title %></h2>
-
-  <a href="/news/<%= breakingNews._id %>" class="read-btn">
-    Read Full News →
-  </a>
-
+<div class="category-bar">
+  <a href="/category/Local">Local</a>
+  <a href="/category/Sports">Sports</a>
+  <a href="/category/Business">Business</a>
+  <a href="/category/Politics">Politics</a>
 </div>
-<% } %>
 
-<!-- MOVING BREAKING TICKER -->
-<% if (tickerNews && tickerNews.length > 0) { %>
-<div class="breaking-bar">
-
+<div class="breaking">
   <div class="breaking-label">BREAKING</div>
-
   <div class="breaking-text">
     <% tickerNews.forEach(item => { %>
-      <span>
-        <%= item.title %> &nbsp;&nbsp;&nbsp;
-      </span>
+      <span><%= item.title %> &nbsp;&nbsp;&nbsp;</span>
     <% }) %>
   </div>
+</div>
 
+<% if(breakingMain){ %>
+<div class="hero">
+  <% if(breakingMain.image){ %>
+    <img src="<%= breakingMain.image %>">
+  <% } %>
+  <h2><%= breakingMain.title %></h2>
+  <a href="/news/<%= breakingMain._id %>" class="btn">Read Full News →</a>
 </div>
 <% } %>
 
-<!-- JS Date & Clock -->
 <script>
 function updateClock(){
   const now = new Date();
   document.getElementById("currentDate").innerHTML =
-    "📅 " + now.toLocaleDateString("en-IN");
-
+    now.toLocaleDateString("en-IN");
   document.getElementById("liveClock").innerHTML =
-    "⏰ " + now.toLocaleTimeString("en-IN");
+    now.toLocaleTimeString("en-IN");
 }
 setInterval(updateClock,1000);
 updateClock();
