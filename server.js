@@ -46,10 +46,19 @@ const News = mongoose.model("News", newsSchema);
 
 app.get("/", async (req, res) => {
   try {
+
     const breakingNews = await News.findOne({ isBreaking: true })
       .sort({ createdAt: -1 });
 
-    res.render("index", { breakingNews });
+    const tickerNews = await News.find({ isBreaking: true })
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    res.render("index", {
+      breakingNews,
+      tickerNews   // ✅ THIS WAS MISSING
+    });
+
   } catch (err) {
     console.log(err);
     res.status(500).send("Internal Server Error");
