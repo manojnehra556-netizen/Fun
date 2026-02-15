@@ -37,23 +37,21 @@ const News = mongoose.model("News", newsSchema);
 app.get("/", async (req, res) => {
   try {
 
-    const breakingMain = await News.findOne({ isBreaking: true })
+    const breakingNews = await News.find({ isBreaking: true })
       .sort({ createdAt: -1 });
 
-    const tickerNews = await News.find({ isBreaking: true })
-      .sort({ createdAt: -1 })
-      .limit(5);
+    const tickerNews = breakingNews; // ticker ke liye bhi same use
 
     res.render("index", {
-      breakingMain: breakingMain || null,
-      tickerNews: tickerNews || []
+      breakingNews,
+      tickerNews
     });
 
   } catch (err) {
-    res.send("Server Error");
+    console.log(err);
+    res.status(500).send("Internal Server Error");
   }
 });
-
 /* ================= CATEGORY ================= */
 
 app.get("/category/:name", async (req, res) => {
