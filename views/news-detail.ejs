@@ -2,80 +2,53 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><%= news.title %> | जिला अपडेट</title>
+<title><%= news.title %></title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial;
   background:#f4f4f4;
 }
 
-/* HEADER */
 .header{
   background:linear-gradient(90deg,#c40000,#ff0000);
   color:white;
+  padding:15px;
   text-align:center;
-  padding:18px;
 }
 
-.top-bar{
-  background:#111;
-  color:white;
-  display:flex;
-  justify-content:space-between;
-  padding:8px 15px;
-  font-size:14px;
-}
-
-/* CONTAINER */
 .container{
+  padding:15px;
+}
+
+.card{
   background:white;
-  margin:15px;
-  padding:18px;
-  border-radius:10px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-/* TITLE */
-.container h1{
-  margin-top:0;
-  font-size:22px;
-}
-
-/* META INFO */
-.meta{
-  font-size:14px;
-  color:#777;
-  margin-bottom:12px;
-}
-
-/* IMAGE */
-.container img{
-  width:100%;
+  padding:15px;
   border-radius:8px;
-  margin:12px 0;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* CONTENT */
-.content{
-  font-size:16px;
-  line-height:1.6;
-  color:#333;
+img{
+  width:100%;
+  border-radius:6px;
+  margin-bottom:10px;
 }
 
-/* BACK BUTTON */
-.btn{
+.meta{
+  color:#666;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.back{
   display:inline-block;
-  margin-top:20px;
-  padding:8px 14px;
+  margin-top:15px;
   background:red;
   color:white;
-  border-radius:6px;
+  padding:8px 14px;
   text-decoration:none;
-}
-.btn:hover{
-  background:#b30000;
+  border-radius:6px;
 }
 </style>
 </head>
@@ -83,36 +56,31 @@ body{
 
 <div class="header">
   <h2>जिला अपडेट</h2>
-  आपके जिले की हर खबर, सबसे पहले
-</div>
-
-<div class="top-bar">
-  <div>
-    📍 <%= news.location || "India" %>
-  </div>
-  <div>
-    🕒 <%= new Date(news.createdAt).toLocaleString("en-IN") %>
-  </div>
 </div>
 
 <div class="container">
 
-  <h1><%= news.title %></h1>
+<div class="card">
 
-  <div class="meta">
-    Category: <b><%= news.category %></b> |
-    Views: <b><%= news.views %></b>
-  </div>
+<h2><%= news.title %></h2>
 
-  <% if(news.image){ %>
-    <img src="<%= news.image %>">
-  <% } %>
+<div class="meta">
+📍 <%= news.location || "Unknown" %> |
+🗓 <%= new Date(news.createdAt).toLocaleString("en-IN") %> |
+👁 Views: <%= news.views %>
+</div>
 
-  <div class="content">
-    <%= news.content %>
-  </div>
+<% if(news.image){ %>
+<img src="<%= news.image %>">
+<% } %>
 
-  <a href="/" class="btn">⬅ Back to Home</a>
+<div>
+  <%- news.content %>
+</div>
+
+<a href="/" class="back">⬅ Back to Home</a>
+
+</div>
 
 </div>
 
