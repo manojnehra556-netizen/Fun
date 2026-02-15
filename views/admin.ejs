@@ -163,11 +163,12 @@ Date: <%= new Date(item.createdAt).toLocaleDateString("en-IN") %>
 
 <br><br>
 
-<a class="delete"
-   href="/admin/delete/<%= item._id %>"
-   onclick="return confirm('Delete this post?')">
-Delete
-</a>
+<form method="POST" action="/admin/delete/<%= item._id %>" style="display:inline;">
+  <button class="delete" 
+          onclick="return confirm('Delete this post?')">
+    Delete
+  </button>
+</form>
 
 </div>
 
