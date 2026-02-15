@@ -74,6 +74,27 @@ app.get("/category/:name", async (req, res) => {
   }
 });
 
+app.get("/", async (req, res) => {
+  try {
+
+    const breakingNews = await News.findOne({ isBreaking: true })
+      .sort({ createdAt: -1 });
+
+    const tickerNews = await News.find({ isBreaking: true })
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    res.render("index", {
+      breakingNews,
+      tickerNews
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 /* =======================
    SINGLE NEWS PAGE
 ======================= */
