@@ -1,141 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title><%= news.title %> | Jila Update</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= news.title %> - जिला अपडेट</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f4f4;
 }
 
-/* Header */
-.header {
-    background: linear-gradient(90deg, #c40000, #ff0000);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
+/* HEADER */
+.header{
+  background:linear-gradient(90deg,#c40000,#ff0000);
+  color:white;
+  text-align:center;
+  padding:18px;
 }
 
-/* Container */
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:15px;
+  background:white;
+  margin-top:20px;
+  border-radius:10px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.08);
 }
 
-/* Title */
-.title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+/* TITLE */
+.title{
+  font-size:26px;
+  margin-bottom:10px;
 }
 
-/* LIVE badge */
-.live {
-    background: red;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    margin-left: 10px;
-    animation: pulse 1.5s infinite;
+/* META */
+.meta{
+  font-size:14px;
+  color:#666;
+  margin-bottom:15px;
 }
 
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+/* IMAGE */
+.hero-img{
+  width:100%;
+  border-radius:8px;
+  margin-bottom:15px;
 }
 
-/* Meta info */
-.meta {
-    font-size: 14px;
-    color: gray;
-    margin-bottom: 15px;
+/* CONTENT */
+.content{
+  font-size:18px;
+  line-height:1.7;
+  color:#333;
+  margin-bottom:20px;
 }
 
-/* Image */
-.news-image {
-    width: 100%;
-    border-radius: 8px;
-    margin: 15px 0;
+/* SHARE */
+.share{
+  margin-top:15px;
 }
 
-/* Content */
-.content {
-    font-size: 16px;
-    line-height: 1.8;
-    color: #333;
+.share a{
+  display:inline-block;
+  padding:8px 12px;
+  background:#25D366;
+  color:white;
+  border-radius:6px;
+  text-decoration:none;
+  font-size:14px;
 }
 
-/* Views */
-.views {
-    margin-top: 15px;
-    font-size: 14px;
-    color: #555;
+/* VIEWS */
+.views{
+  margin-top:10px;
+  font-size:14px;
+  color:#777;
 }
 
-/* Back button */
-.back-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background: #c40000;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: 0.3s;
+/* BACK */
+.back{
+  display:inline-block;
+  margin-top:20px;
+  text-decoration:none;
+  font-weight:bold;
+  color:#c40000;
 }
 
-.back-btn:hover {
-    background: #900000;
+/* MOBILE */
+@media(max-width:600px){
+  .title{
+    font-size:20px;
+  }
+  .content{
+    font-size:16px;
+  }
 }
 </style>
 </head>
-
 <body>
 
 <div class="header">
-    जिला अपडेट
+  <h2>जिला अपडेट</h2>
 </div>
 
 <div class="container">
 
-    <div class="title">
-        <%= news.title %>
-        <% if(news.isLive){ %>
-            <span class="live">LIVE</span>
-        <% } %>
-    </div>
+  <div class="title">
+    <%= news.title %>
+  </div>
 
-    <div class="meta">
-        Category: <%= news.category %> |
-        Location: <%= news.location || "N/A" %> |
-        <%= new Date(news.createdAt).toLocaleString() %>
-    </div>
+  <div class="meta">
+    📍 <%= news.location || "Location" %> |
+    🗓 <%= news.createdAt.toLocaleDateString("en-IN") %> |
+    ⏰ <%= news.createdAt.toLocaleTimeString("en-IN") %>
+  </div>
 
-    <% if(news.image){ %>
-        <img src="<%= news.image %>" class="news-image">
-    <% } %>
+  <% if(news.image){ %>
+    <img src="<%= news.image %>" class="hero-img">
+  <% } %>
 
-    <div class="content">
-        <%= news.content %>
-    </div>
+  <div class="content">
+    <%= news.content %>
+  </div>
 
-    <div class="views">
-        👁 Views: <%= news.views %>
-    </div>
+  <div class="share">
+    <a target="_blank"
+      href="https://wa.me/?text=<%= encodeURIComponent(news.title + ' - ' + req.protocol + '://' + req.get('host') + req.originalUrl) %>">
+      Share on WhatsApp
+    </a>
+  </div>
 
-    <a href="/" class="back-btn">← Back to Home</a>
+  <div class="views">
+    👁 <%= news.views %> views
+  </div>
+
+  <a href="/" class="back">← Back to Home</a>
 
 </div>
 
