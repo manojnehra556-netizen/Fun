@@ -1,176 +1,167 @@
-const express = require("express");
-process.env.TZ = "Asia/Kolkata"; // India Time Fix
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>जिला अपडेट</title>
 
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const path = require("path");
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f4f4f4;
+}
 
-const app = express();
+/* Header */
+.header{
+  background:linear-gradient(90deg,#c40000,#ff0000);
+  color:white;
+  text-align:center;
+  padding:15px;
+}
+.header h1{
+  margin:0;
+}
+.tagline{
+  font-size:14px;
+}
 
-/* =======================
-   DATABASE CONNECT
-======================= */
+/* Top Date Bar */
+.top-bar{
+  background:#111;
+  color:#fff;
+  display:flex;
+  justify-content:space-between;
+  padding:8px 15px;
+  font-size:14px;
+}
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/jilaUpdate", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => console.log("❌ Mongo Error:", err));
+/* Breaking Big */
+.main-breaking{
+  background:#fff;
+  margin:15px;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
 
-/* =======================
-   MIDDLEWARE
-======================= */
+.main-breaking h2{
+  font-size:20px;
+  margin:10px 0;
+}
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.set("view engine", "ejs");
+.breaking-img{
+  width:100%;
+  border-radius:6px;
+}
 
-/* =======================
-   NEWS SCHEMA
-======================= */
+.read-btn{
+  display:inline-block;
+  background:#e60000;
+  color:white;
+  padding:8px 15px;
+  text-decoration:none;
+  border-radius:5px;
+  margin-top:10px;
+}
 
-const newsSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  category: String,
-  image: String,
-  location: String,
-  isBreaking: { type: Boolean, default: false },
-  isLive: { type: Boolean, default: false },
-  views: { type: Number, default: 0 }
-}, { timestamps: true });
+/* Breaking Ticker */
+.breaking-bar{
+  display:flex;
+  align-items:center;
+  background:black;
+  color:white;
+  overflow:hidden;
+}
 
-const News = mongoose.model("News", newsSchema);
+.breaking-label{
+  background:red;
+  padding:8px 12px;
+  font-weight:bold;
+}
 
-/* =======================
-   HOME PAGE
-======================= */
+.breaking-text{
+  white-space:nowrap;
+  display:inline-block;
+  padding-left:100%;
+  animation:scroll 15s linear infinite;
+}
 
-app.get("/", async (req, res) => {
-  try {
+@keyframes scroll{
+  0%{ transform:translateX(0); }
+  100%{ transform:translateX(-100%); }
+}
 
-    const breakingNews = await News.findOne({ isBreaking: true })
-      .sort({ createdAt: -1 });
-
-    const tickerNews = await News.find({ isBreaking: true })
-      .sort({ createdAt: -1 })
-      .limit(5);
-
-    res.render("index", {
-      breakingNews,
-      tickerNews
-    });
-
-  } catch (err) {
-    console.log("Home Error:", err);
-    res.status(500).send("Internal Server Error");
+/* Mobile */
+@media(max-width:600px){
+  .main-breaking h2{
+    font-size:18px;
   }
-});
+}
+</style>
+</head>
 
-/* =======================
-   CATEGORY PAGE
-======================= */
+<body>
 
-app.get("/category/:name", async (req, res) => {
-  try {
+<!-- Header -->
+<div class="header">
+  <h1>जिला अपडेट</h1>
+  <div class="tagline">आपके जिले की हर खबर, सबसे पहले</div>
+</div>
 
-    const news = await News.find({ category: req.params.name })
-      .sort({ createdAt: -1 });
+<!-- Date + Live Time -->
+<div class="top-bar">
+  <div id="currentDate"></div>
+  <div id="liveClock"></div>
+</div>
 
-    res.render("category", {
-      category: req.params.name,
-      news
-    });
+<!-- BIG BREAKING NEWS -->
+<% if (breakingNews) { %>
+<div class="main-breaking">
 
-  } catch (err) {
-    console.log("Category Error:", err);
-    res.status(500).send("Error loading category");
-  }
-});
+  <% if (breakingNews.image) { %>
+    <img src="<%= breakingNews.image %>" class="breaking-img">
+  <% } %>
 
-/* =======================
-   SINGLE NEWS PAGE
-======================= */
+  <h2><%= breakingNews.title %></h2>
 
-app.get("/news/:id", async (req, res) => {
-  try {
+  <a href="/news/<%= breakingNews._id %>" class="read-btn">
+    Read Full News →
+  </a>
 
-    const news = await News.findById(req.params.id);
+</div>
+<% } %>
 
-    if (!news) return res.send("News not found");
+<!-- MOVING BREAKING TICKER -->
+<% if (tickerNews && tickerNews.length > 0) { %>
+<div class="breaking-bar">
 
-    news.views += 1;
-    await news.save();
+  <div class="breaking-label">BREAKING</div>
 
-    res.render("news-detail", { news });
+  <div class="breaking-text">
+    <% tickerNews.forEach(item => { %>
+      <span>
+        <%= item.title %> &nbsp;&nbsp;&nbsp;
+      </span>
+    <% }) %>
+  </div>
 
-  } catch (err) {
-    console.log("Single News Error:", err);
-    res.status(500).send("Error loading news");
-  }
-});
+</div>
+<% } %>
 
-/* =======================
-   ADMIN PANEL
-======================= */
+<!-- JS Date & Clock -->
+<script>
+function updateClock(){
+  const now = new Date();
+  document.getElementById("currentDate").innerHTML =
+    "📅 " + now.toLocaleDateString("en-IN");
 
-app.get("/admin", async (req, res) => {
-  try {
-    const allNews = await News.find().sort({ createdAt: -1 });
-    res.render("admin", { allNews });
-  } catch (err) {
-    console.log("Admin Error:", err);
-    res.status(500).send("Admin Error");
-  }
-});
+  document.getElementById("liveClock").innerHTML =
+    "⏰ " + now.toLocaleTimeString("en-IN");
+}
+setInterval(updateClock,1000);
+updateClock();
+</script>
 
-/* =======================
-   ADD NEWS
-======================= */
-
-app.post("/admin/add", async (req, res) => {
-  try {
-
-    const newNews = new News({
-      title: req.body.title,
-      content: req.body.content,
-      category: req.body.category,
-      image: req.body.image,
-      location: req.body.location,
-      isBreaking: req.body.isBreaking === "on",
-      isLive: req.body.isLive === "on"
-    });
-
-    await newNews.save();
-    res.redirect("/admin");
-
-  } catch (err) {
-    console.log("Add Error:", err);
-    res.status(500).send("Error adding news");
-  }
-});
-
-/* =======================
-   DELETE NEWS
-======================= */
-
-app.post("/admin/delete/:id", async (req, res) => {
-  try {
-    await News.findByIdAndDelete(req.params.id);
-    res.redirect("/admin");
-  } catch (err) {
-    console.log("Delete Error:", err);
-    res.status(500).send("Delete Error");
-  }
-});
-
-/* =======================
-   PORT
-======================= */
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log("🚀 Server running on port " + PORT);
-});
+</body>
+</html>
