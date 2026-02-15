@@ -98,8 +98,13 @@ app.post("/admin/add", async (req, res) => {
 });
 
 app.post("/admin/delete/:id", async (req, res) => {
-  await News.findByIdAndDelete(req.params.id);
-  res.redirect("/admin");
+  try {
+    await News.findByIdAndDelete(req.params.id);
+    res.redirect("/admin");
+  } catch (err) {
+    console.log(err);
+    res.send("Delete Error");
+  }
 });
 
 /* ================= PORT ================= */
