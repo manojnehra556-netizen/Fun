@@ -1,53 +1,6 @@
 const express = require("express");
-process.env.TZ = "Asia/Kolkata";   // ✅ India Time Fix
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const path = require("path");
+process.env.TZ = "Asia/Kolkata"; // India Time
 
-
-
-/* =======================
-   DATABASE CONNECT
-======================= */
-
-mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/jilaUpdate", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => console.log("❌ Mongo Error:", err));
-
-/* =======================
-   MIDDLEWARE
-======================= */
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.set("view engine", "ejs");
-
-/* =======================
-   NEWS SCHEMA
-======================= */
-
-const newsSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  category: String,
-  image: String,
-  location: String,
-  isBreaking: { type: Boolean, default: false },
-  isLive: { type: Boolean, default: false },
-  views: { type: Number, default: 0 }
-}, { timestamps: true });   // ✅ Auto createdAt
-
-const News = mongoose.model("News", newsSchema);
-
-/* =======================
-   HOME PAGE
-======================= */
-
-const express = require("express");
-process.env.TZ = "Asia/Kolkata";   // ✅ India Time Fix
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -58,10 +11,7 @@ const app = express();
    DATABASE CONNECT
 ======================= */
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/jilaUpdate", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/jilaUpdate")
 .then(() => console.log("✅ MongoDB Connected"))
 .catch(err => console.log("❌ Mongo Error:", err));
 
@@ -86,7 +36,7 @@ const newsSchema = new mongoose.Schema({
   isBreaking: { type: Boolean, default: false },
   isLive: { type: Boolean, default: false },
   views: { type: Number, default: 0 }
-}, { timestamps: true });   // ✅ Auto createdAt
+}, { timestamps: true });
 
 const News = mongoose.model("News", newsSchema);
 
@@ -96,14 +46,10 @@ const News = mongoose.model("News", newsSchema);
 
 app.get("/", async (req, res) => {
   try {
-
     const breakingNews = await News.findOne({ isBreaking: true })
       .sort({ createdAt: -1 });
 
-    res.render("index", {
-      breakingNews
-    });
-
+    res.render("index", { breakingNews });
   } catch (err) {
     console.log(err);
     res.status(500).send("Internal Server Error");
@@ -116,7 +62,6 @@ app.get("/", async (req, res) => {
 
 app.get("/category/:name", async (req, res) => {
   try {
-
     const news = await News.find({ category: req.params.name })
       .sort({ createdAt: -1 });
 
@@ -124,7 +69,6 @@ app.get("/category/:name", async (req, res) => {
       category: req.params.name,
       news
     });
-
   } catch (err) {
     res.send("Error loading category");
   }
@@ -136,7 +80,6 @@ app.get("/category/:name", async (req, res) => {
 
 app.get("/news/:id", async (req, res) => {
   try {
-
     const news = await News.findById(req.params.id);
 
     if (!news) return res.send("News not found");
@@ -145,7 +88,6 @@ app.get("/news/:id", async (req, res) => {
     await news.save();
 
     res.render("news-detail", { news });
-
   } catch (err) {
     res.send("Error loading news");
   }
@@ -165,95 +107,6 @@ app.get("/admin", async (req, res) => {
 ======================= */
 
 app.post("/admin/add", async (req, res) => {
-
-  const newNews = new News({
-    title: req.body.title,
-    content: req.body.content,
-    category: req.body.category,
-    image: req.body.image,
-    location: req.body.location,
-    isBreaking: req.body.isBreaking === "on",
-    isLive: req.body.isLive === "on"
-  });
-
-  await newNews.save();
-  res.redirect("/admin");
-});
-
-/* =======================
-   DELETE NEWS
-======================= */
-
-app.post("/admin/delete/:id", async (req, res) => {
-  await News.findByIdAndDelete(req.params.id);
-  res.redirect("/admin");
-});
-
-/* =======================
-   PORT
-======================= */
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log("🚀 Server running on port " + PORT);
-});
-/* =======================
-   CATEGORY PAGE
-======================= */
-
-app.get("/category/:name", async (req, res) => {
-  try {
-
-    const news = await News.find({ category: req.params.name })
-      .sort({ createdAt: -1 });
-
-    res.render("category", {
-      category: req.params.name,
-      news
-    });
-
-  } catch (err) {
-    res.send("Error loading category");
-  }
-});
-
-/* =======================
-   SINGLE NEWS PAGE
-======================= */
-
-app.get("/news/:id", async (req, res) => {
-  try {
-
-    const news = await News.findById(req.params.id);
-
-    if (!news) return res.send("News not found");
-
-    news.views += 1;
-    await news.save();
-
-    res.render("news-detail", { news });
-
-  } catch (err) {
-    res.send("Error loading news");
-  }
-});
-
-/* =======================
-   ADMIN PANEL
-======================= */
-
-app.get("/admin", async (req, res) => {
-  const allNews = await News.find().sort({ createdAt: -1 });
-  res.render("admin", { allNews });
-});
-
-/* =======================
-   ADD NEWS
-======================= */
-
-app.post("/admin/add", async (req, res) => {
-
   const newNews = new News({
     title: req.body.title,
     content: req.body.content,
